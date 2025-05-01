@@ -12,9 +12,10 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <div>
-      <h1 className="text-center text-6xl font-medium pt-5">
+      <h1 className="text-center text-6xl font-medium py-5">
         WebBench Dashboard
       </h1>
+      {/* <p className="text-center text-2xl text-muted-foreground">Reliable</p> */}
       <MapChart />
     </div>
   );
