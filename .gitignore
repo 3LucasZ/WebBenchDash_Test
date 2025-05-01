@@ -1,0 +1,15 @@
+# Backend
+env
+__pycache__
+
+# Frontend
+.react-router
+build
+node_modules
+
+# Data
+features.json
+vulnerability.csv
+
+# Misc
+.DS_Store
