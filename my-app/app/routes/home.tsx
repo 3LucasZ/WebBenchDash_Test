@@ -1,5 +1,4 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
 import { Button } from "~/components/ui/button";
 import MapChart from "~/components/macro/MapChart";
 
@@ -13,7 +12,7 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <div>
-      <h1 className="text-center text-5xl font-medium pt-5">
+      <h1 className="text-center text-6xl font-medium pt-5">
         WebBench Dashboard
       </h1>
       <MapChart />
