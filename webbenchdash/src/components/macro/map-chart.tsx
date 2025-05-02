@@ -55,7 +55,7 @@ const MapChart = ({
           rotate: [-10, 0, 0],
           scale: 147,
         }}
-        height={450}
+        height={400}
         style={{ width: "100%", height: "auto" }}
       >
         <ZoomableGroup
