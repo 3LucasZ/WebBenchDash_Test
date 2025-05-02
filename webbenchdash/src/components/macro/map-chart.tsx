@@ -100,7 +100,7 @@ const MapChart = ({
                       fill={d ? colorScale(Number(d["2017"])) : "#F5F4F6"}
                       stroke={
                         geo.properties.name === selectedCountry
-                          ? "#000000"
+                          ? "#4D4D4D"
                           : "#FFFFFF"
                       }
                       strokeWidth={

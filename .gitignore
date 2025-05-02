@@ -13,3 +13,4 @@ vulnerability.csv
 
 # Misc
 .DS_Store
+*.csv
