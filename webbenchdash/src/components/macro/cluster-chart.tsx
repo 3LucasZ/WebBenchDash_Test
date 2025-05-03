@@ -17,23 +17,31 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "C1", desktop: 186 },
-  { month: "C2", desktop: 305 },
-  { month: "C3", desktop: 237 },
-  { month: "C4", desktop: 73 },
-  { month: "C5", desktop: 209 },
-  { month: "C6", desktop: 214 },
-];
+import { useEffect, useState } from "react";
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "value",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig;
 
-export function ClusterChart() {
+export function ClusterChart({ country }: { country: string }) {
+  const [data, setData] = useState<{ key: string; value: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch("http://0.0.0.0:8000/clusters/" + country)
+      .then((res) => res.json())
+      .then((json) => {
+        const transformed = Object.entries(json).map(([key, value]) => ({
+          key,
+          value: value as number,
+        }));
+        setData(transformed);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [country]);
   return (
     <Card className="w-80">
       <CardHeader>
@@ -42,20 +50,17 @@ export function ClusterChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="key"
               tickLine={false}
-              tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              // tickMargin={10}
+              tickFormatter={(value) => value.slice(1, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
+            <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
+            <Bar dataKey="value" fill="var(--color-desktop)" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>

@@ -24,29 +24,33 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { month: "Req size", desktop: 186, mobile: 80 },
-  { month: "Req num", desktop: 305, mobile: 200 },
-  { month: "CDN", desktop: 237, mobile: 120 },
-  { month: "NS", desktop: 73, mobile: 190 },
-  { month: "Mem", desktop: 209, mobile: 130 },
-];
+import { useEffect, useState } from "react";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  value: {
     color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
   },
   label: {
     color: "hsl(var(--background))",
   },
 } satisfies ChartConfig;
 
-export function PercentileChart() {
+export function PercentileChart({ country }: { country: string }) {
+  const [data, setData] = useState<{ key: string; value: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch("http://0.0.0.0:8000/percentiles/" + country)
+      .then((res) => res.json())
+      .then((json) => {
+        const transformed = Object.entries(json).map(([key, value]) => ({
+          key,
+          value: value as number,
+        }));
+        setData(transformed);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [country]);
   return (
     <Card>
       <CardHeader>
@@ -57,7 +61,7 @@ export function PercentileChart() {
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             layout="vertical"
             margin={{
               right: 16,
@@ -65,7 +69,7 @@ export function PercentileChart() {
           >
             <CartesianGrid horizontal={false} />
             <YAxis
-              dataKey="month"
+              dataKey="key"
               type="category"
               tickLine={false}
               tickMargin={10}
@@ -73,30 +77,30 @@ export function PercentileChart() {
               tickFormatter={(value) => value.slice(0, 3)}
               hide
             />
-            <XAxis dataKey="desktop" type="number" hide />
+            <XAxis dataKey="value" type="number" hide />
             <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              cursor={true}
+              content={<ChartTooltipContent indicator="line" hideIndicator />}
             />
             <Bar
-              dataKey="desktop"
+              dataKey="value"
               layout="vertical"
               fill="var(--color-desktop)"
               radius={4}
             >
-              <LabelList
-                dataKey="month"
+              {/* <LabelList
+                dataKey="key"
                 position="insideLeft"
-                offset={8}
+                offset={4}
                 className="fill-[--color-label]"
-                fontSize={12}
-              />
+                fontSize={10}
+              /> */}
               <LabelList
-                dataKey="desktop"
+                dataKey="key"
                 position="right"
-                offset={8}
+                offset={4}
                 className="fill-foreground"
-                fontSize={12}
+                fontSize={10}
               />
             </Bar>
           </BarChart>

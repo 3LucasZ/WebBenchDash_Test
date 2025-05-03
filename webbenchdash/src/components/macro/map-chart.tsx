@@ -11,6 +11,8 @@ import {
   ZoomableGroup,
 } from "react-simple-maps";
 import { Slider } from "../ui/slider";
+import { Toggle } from "../ui/toggle";
+import { Italic, ZoomInIcon } from "lucide-react";
 
 const geoUrl = "/features.json";
 
@@ -25,6 +27,7 @@ const MapChart = ({
   selectedCountry: string;
   setSelectedCountry: Function;
 }) => {
+  const [autoZoom, setAutoZoom] = useState(true);
   const [data, setData] = useState<DSVRowArray<string> | null>(null);
   const [camera, setCamera] = useState<{
     center: [number, number];
@@ -41,7 +44,9 @@ const MapChart = ({
     console.log(geo);
     setSelectedCountry(geo.properties.name);
     const centroid = geoCentroid(geo);
-    setCamera({ center: centroid, zoom: 4 });
+    if (autoZoom) {
+      setCamera({ center: centroid, zoom: 4 });
+    }
   };
 
   const handleFilter = (filter: SVGElement) => {
@@ -49,7 +54,17 @@ const MapChart = ({
   };
 
   return (
-    <>
+    <div className="relative">
+      <div className="absolute top-2 left-2 z-10">
+        <Toggle
+          aria-label="Toggle italic"
+          pressed={autoZoom}
+          onPressedChange={setAutoZoom}
+        >
+          <ZoomInIcon />
+          Auto Zoom
+        </Toggle>
+      </div>
       <ComposableMap
         projectionConfig={{
           rotate: [-10, 0, 0],
@@ -93,6 +108,7 @@ const MapChart = ({
                 }
                 return reorderedGeographies.map((geo) => {
                   const d = data.find((s) => s.ISO3 === geo.id);
+                  // console.log(geo);
                   return (
                     <Geography
                       key={geo.rsmKey}
@@ -128,7 +144,7 @@ const MapChart = ({
           )}
         </ZoomableGroup>
       </ComposableMap>
-    </>
+    </div>
   );
 };
 
