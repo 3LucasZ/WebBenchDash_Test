@@ -26,13 +26,13 @@ function App() {
       />
       <div className="min-h-4"></div>
       <div className="flex gap-4 w-full px-4">
-        <div className="w-1/3">
+        <div className="w-1/2">
           <ClusterChart country={selectedCountry} />
         </div>
-        <div className="w-1/3">
+        <div className="w-1/2">
           <PercentileChart country={selectedCountry} />
         </div>
-        <div className="w-1/3">{/* <SecurityChart /> */}</div>
+        {/* <div className="w-1/3"><SecurityChart /></div> */}
       </div>
       <div className="min-h-4"></div>
     </>

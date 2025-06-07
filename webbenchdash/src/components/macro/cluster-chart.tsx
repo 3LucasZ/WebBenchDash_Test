@@ -43,7 +43,7 @@ export function ClusterChart({ country }: { country: string }) {
       .finally(() => setLoading(false));
   }, [country]);
   return (
-    <Card className="w-80">
+    <Card>
       <CardHeader>
         <CardTitle>Cluster Distribution</CardTitle>
         {/* <CardDescription>January - June 2024</CardDescription> */}
@@ -59,7 +59,10 @@ export function ClusterChart({ country }: { country: string }) {
               // tickMargin={10}
               tickFormatter={(value) => value.slice(1, 3)}
             />
-            <ChartTooltip cursor={true} content={<ChartTooltipContent />} />
+            <ChartTooltip
+              cursor={true}
+              content={<ChartTooltipContent hideIndicator />}
+            />
             <Bar dataKey="value" fill="var(--color-desktop)" radius={4} />
           </BarChart>
         </ChartContainer>
