@@ -27,7 +27,7 @@ const MapChart = ({
   selectedCountry: string;
   setSelectedCountry: Function;
 }) => {
-  const [autoZoom, setAutoZoom] = useState(true);
+  const [autoZoom, setAutoZoom] = useState(false);
   const [data, setData] = useState<DSVRowArray<string> | null>(null);
   const [camera, setCamera] = useState<{
     center: [number, number];
@@ -70,8 +70,8 @@ const MapChart = ({
           rotate: [-10, 0, 0],
           scale: 147,
         }}
-        height={400}
-        style={{ width: "100%", height: "auto" }}
+        height={350}
+        // style={{width: "100%", height: "100%"}}
       >
         <ZoomableGroup
           center={camera.center}

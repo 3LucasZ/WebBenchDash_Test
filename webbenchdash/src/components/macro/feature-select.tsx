@@ -9,21 +9,57 @@ import {
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-export function FeatureSelect() {
+export function FeatureSelect({
+  value1,
+  onValue1Change,
+  value2,
+  onValue2Change,
+}: {
+  value1: string;
+  onValue1Change: (val: string) => void;
+  value2: string;
+  onValue2Change: (val: string) => void;
+}) {
   return (
-    <ToggleGroup type="single" variant="outline">
-      <ToggleGroupItem value="bold" aria-label="Toggle bold">
-        <ShieldIcon className="h-8 w-8" />
-        <p className="w-50 text-xl">Reliability</p>
-      </ToggleGroupItem>
-      <ToggleGroupItem value="italic" aria-label="Toggle italic">
-        <GaugeIcon className="h-8 w-8" />
-        <p className="w-50 text-xl">Performance</p>
-      </ToggleGroupItem>
-      <ToggleGroupItem value="underline" aria-label="Toggle underline">
-        <LockIcon className="h-8 w-8" />
-        <p className="w-50 text-xl">Security</p>
-      </ToggleGroupItem>
-    </ToggleGroup>
+    <div className="flex flex-col items-center">
+      <div>
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          value={value1}
+          onValueChange={onValue1Change}
+        >
+          <ToggleGroupItem value="reliability">
+            <ShieldIcon className="h-8 w-8" />
+            <p className="w-50 text-xl">Reliability</p>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="performance">
+            <GaugeIcon className="h-8 w-8" />
+            <p className="w-50 text-xl">Performance</p>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="security">
+            <LockIcon className="h-8 w-8" />
+            <p className="w-50 text-xl">Security</p>
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+      <div>
+        <ToggleGroup
+          type="single"
+          variant="outline"
+          value={value2}
+          onValueChange={onValue2Change}
+        >
+          <ToggleGroupItem value="gov">
+            {/* <ShieldIcon className="h-8 w-8" /> */}
+            <p className="w-50 text-xl">Government</p>
+          </ToggleGroupItem>
+          <ToggleGroupItem value="top">
+            {/* <GaugeIcon className="h-8 w-8" /> */}
+            <p className="w-50 text-xl">Top sites</p>
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+    </div>
   );
 }
