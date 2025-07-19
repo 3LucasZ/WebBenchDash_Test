@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import { csv } from "d3-fetch";
 import { scaleLinear } from "d3-scale";
-import { geoCentroid, GeoGeometryObjects, type DSVRowArray } from "d3";
+import { geoCentroid, GeoGeometryObjects, select, type DSVRowArray } from "d3";
 import {
   ComposableMap,
   Geographies,
@@ -23,9 +23,13 @@ const colorScale = scaleLinear<string>()
 const MapChart = ({
   selectedCountry,
   setSelectedCountry,
+  selectedCountry2,
+  setSelectedCountry2,
 }: {
   selectedCountry: string;
   setSelectedCountry: Function;
+  selectedCountry2: string;
+  setSelectedCountry2: Function;
 }) => {
   const [autoZoom, setAutoZoom] = useState(false);
   const [data, setData] = useState<DSVRowArray<string> | null>(null);
@@ -42,7 +46,16 @@ const MapChart = ({
 
   const handleCountryClick = (geo: GeoGeometryObjects) => {
     console.log(geo);
-    setSelectedCountry(geo.properties.name);
+    if (geo.properties.name == selectedCountry) {
+      setSelectedCountry(selectedCountry2);
+      setSelectedCountry2("");
+    } else if (geo.properties.name == selectedCountry2) {
+      setSelectedCountry2("");
+    } else if (!selectedCountry) {
+      setSelectedCountry(geo.properties.name);
+    } else {
+      setSelectedCountry2(geo.properties.name);
+    }
     const centroid = geoCentroid(geo);
     if (autoZoom) {
       setCamera({ center: centroid, zoom: 4 });
@@ -99,9 +112,19 @@ const MapChart = ({
                 const selectedIndex = reorderedGeographies.findIndex(
                   (geo) => geo.properties.name === selectedCountry
                 );
+                const selectedIndex2 = reorderedGeographies.findIndex(
+                  (geo) => geo.properties.name === selectedCountry2
+                );
                 if (selectedIndex !== -1) {
                   const [selectedGeo] = reorderedGeographies.splice(
                     selectedIndex,
+                    1
+                  );
+                  reorderedGeographies.push(selectedGeo);
+                }
+                if (selectedIndex2 !== -1) {
+                  const [selectedGeo] = reorderedGeographies.splice(
+                    selectedIndex2,
                     1
                   );
                   reorderedGeographies.push(selectedGeo);
@@ -115,12 +138,18 @@ const MapChart = ({
                       geography={geo}
                       fill={d ? colorScale(Number(d["2017"])) : "#F5F4F6"}
                       stroke={
-                        geo.properties.name === selectedCountry
+                        [selectedCountry, selectedCountry2].includes(
+                          geo.properties.name
+                        )
                           ? "#4D4D4D"
                           : "#FFFFFF"
                       }
                       strokeWidth={
-                        geo.properties.name === selectedCountry ? 2 : 1
+                        [selectedCountry, selectedCountry2].includes(
+                          geo.properties.name
+                        )
+                          ? 2
+                          : 1
                       }
                       style={{
                         default: { outline: "none" },

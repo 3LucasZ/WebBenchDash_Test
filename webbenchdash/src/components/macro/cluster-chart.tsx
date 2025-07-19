@@ -18,6 +18,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   desktop: {
@@ -30,17 +31,19 @@ export function ClusterChart({ country }: { country: string }) {
   const [data, setData] = useState<{ key: string; value: number }[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch("http://0.0.0.0:8000/clusters/" + country)
-      .then((res) => res.json())
-      .then((json) => {
-        const transformed = Object.entries(json).map(([key, value]) => ({
-          key,
-          value: value as number,
-        }));
-        setData(transformed);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    if (country) {
+      fetch("http://0.0.0.0:8000/clusters/" + country)
+        .then((res) => res.json())
+        .then((json) => {
+          const transformed = Object.entries(json).map(([key, value]) => ({
+            key,
+            value: value as number,
+          }));
+          setData(transformed);
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false));
+    }
   }, [country]);
   return (
     <Card>
@@ -49,23 +52,33 @@ export function ClusterChart({ country }: { country: string }) {
         {/* <CardDescription>January - June 2024</CardDescription> */}
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart data={data}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="key"
-              tickLine={false}
-              axisLine={false}
-              // tickMargin={10}
-              tickFormatter={(value) => value.slice(1, 3)}
-            />
-            <ChartTooltip
-              cursor={true}
-              content={<ChartTooltipContent hideIndicator />}
-            />
-            <Bar dataKey="value" fill="var(--color-desktop)" radius={4} />
-          </BarChart>
-        </ChartContainer>
+        {loading ? (
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+          </div>
+        ) : (
+          <ChartContainer config={chartConfig} className="h-60">
+            <BarChart data={data}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="key"
+                tickLine={false}
+                axisLine={false}
+                // tickMargin={10}
+                tickFormatter={(value) => value.slice(1, 3)}
+              />
+              <ChartTooltip
+                cursor={true}
+                content={<ChartTooltipContent hideIndicator />}
+              />
+              <Bar dataKey="value" fill="var(--color-desktop)" radius={4} />
+            </BarChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );

@@ -27,7 +27,10 @@ export function FeatureSelect({
           type="single"
           variant="outline"
           value={value1}
-          onValueChange={onValue1Change}
+          onValueChange={(newValue: string | null) => {
+            if (newValue === null || newValue === "") return;
+            onValue1Change(newValue);
+          }}
         >
           <ToggleGroupItem value="reliability">
             <ShieldIcon className="h-8 w-8" />
@@ -43,16 +46,21 @@ export function FeatureSelect({
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
-      <div>
+      <div className="h-4"></div>
+      <div className="theme-blue">
         <ToggleGroup
           type="single"
           variant="outline"
           value={value2}
-          onValueChange={onValue2Change}
+          onValueChange={(newValue: string | null) => {
+            if (newValue === null || newValue === "") return;
+            onValue2Change(newValue);
+          }}
+          className="theme-blue"
         >
           <ToggleGroupItem value="gov">
             {/* <ShieldIcon className="h-8 w-8" /> */}
-            <p className="w-50 text-xl">Government</p>
+            <p className="w-50 text-xl theme-blue">Government</p>
           </ToggleGroupItem>
           <ToggleGroupItem value="top">
             {/* <GaugeIcon className="h-8 w-8" /> */}

@@ -25,6 +25,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   value: {
@@ -39,17 +40,19 @@ export function PercentileChart({ country }: { country: string }) {
   const [data, setData] = useState<{ key: string; value: number }[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch("http://0.0.0.0:8000/percentiles/" + country)
-      .then((res) => res.json())
-      .then((json) => {
-        const transformed = Object.entries(json).map(([key, value]) => ({
-          key,
-          value: value as number,
-        }));
-        setData(transformed);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    if (country) {
+      fetch("http://0.0.0.0:8000/percentiles/" + country)
+        .then((res) => res.json())
+        .then((json) => {
+          const transformed = Object.entries(json).map(([key, value]) => ({
+            key,
+            value: value as number,
+          }));
+          setData(transformed);
+        })
+        .catch(console.error)
+        .finally(() => setLoading(false));
+    }
   }, [country]);
   return (
     <Card>
@@ -58,53 +61,63 @@ export function PercentileChart({ country }: { country: string }) {
         {/* <CardDescription>January - June 2024</CardDescription> */}
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={data}
-            layout="vertical"
-            margin={{
-              right: 16,
-            }}
-          >
-            <CartesianGrid horizontal={false} />
-            <YAxis
-              dataKey="key"
-              type="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-              hide
-            />
-            <XAxis dataKey="value" type="number" hide />
-            <ChartTooltip
-              cursor={true}
-              content={<ChartTooltipContent indicator="line" hideIndicator />}
-            />
-            <Bar
-              dataKey="value"
+        {loading ? (
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[250px]" />
+          </div>
+        ) : (
+          <ChartContainer config={chartConfig} className="h-60">
+            <BarChart
+              accessibilityLayer
+              data={data}
               layout="vertical"
-              fill="var(--color-desktop)"
-              radius={4}
+              margin={{
+                right: 16,
+              }}
             >
-              {/* <LabelList
+              <CartesianGrid horizontal={false} />
+              <YAxis
+                dataKey="key"
+                type="category"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value) => value.slice(0, 3)}
+                hide
+              />
+              <XAxis dataKey="value" type="number" hide />
+              <ChartTooltip
+                cursor={true}
+                content={<ChartTooltipContent indicator="line" hideIndicator />}
+              />
+              <Bar
+                dataKey="value"
+                layout="vertical"
+                fill="var(--color-desktop)"
+                radius={4}
+              >
+                {/* <LabelList
                 dataKey="key"
                 position="insideLeft"
                 offset={4}
                 className="fill-[--color-label]"
                 fontSize={10}
               /> */}
-              <LabelList
-                dataKey="key"
-                position="right"
-                offset={4}
-                className="fill-foreground"
-                fontSize={10}
-              />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
+                <LabelList
+                  dataKey="key"
+                  position="right"
+                  offset={4}
+                  className="fill-foreground"
+                  fontSize={10}
+                />
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );

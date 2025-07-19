@@ -3,12 +3,12 @@ import { FeatureSelect } from "./components/macro/feature-select";
 import MapChart from "./components/macro/map-chart";
 import { ClusterChart } from "./components/macro/cluster-chart";
 import { PercentileChart } from "./components/macro/percentile-chart";
-import { ResilienceDNSChart } from "./components/macro/resilience-dns-chart";
 import { ResilienceDNSRaw } from "./components/macro/resilience-dns-raw";
+import { CountryName } from "./components/macro/country-name";
 
 function App() {
-  const [selectedCountry, setSelectedCountry] =
-    useState<string>("United States");
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [selectedCountry2, setSelectedCountry2] = useState<string>("");
   const [selectedFeature, setSelectedFeature] = useState("reliability");
   const [selectedSubset, setSelectedSubset] = useState("gov");
 
@@ -27,23 +27,37 @@ function App() {
         />
       </div>
       <div className="min-h-4"></div>
-      <p className="text-center text-3xl">
-        {selectedCountry || "Select a Country"}
-      </p>
+      <CountryName c1={selectedCountry} c2={selectedCountry2} />
       <div className="min-h-4"></div>
       <MapChart
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
+        selectedCountry2={selectedCountry2}
+        setSelectedCountry2={setSelectedCountry2}
       />
       <div className="flex max-w-6xl gap-4 px-4 bottom-3 sticky">
         {selectedFeature == "reliability" && (
           <div className="w-1/2">
-            <ResilienceDNSRaw country={selectedCountry} />
+            <ResilienceDNSRaw
+              country={selectedCountry}
+              subset={selectedSubset}
+            />
           </div>
         )}
-        <div className="w-1/2">
-          <ClusterChart country={selectedCountry} />
-        </div>
+        {selectedFeature == "reliability" && selectedCountry2 && (
+          <div className="w-1/2">
+            <ResilienceDNSRaw
+              country={selectedCountry2}
+              subset={selectedSubset}
+            />
+          </div>
+        )}
+        {selectedFeature == "performance" && (
+          <div className="w-1/2">
+            <ClusterChart country={selectedCountry} />
+          </div>
+        )}
+
         <div className="w-1/2">
           <PercentileChart country={selectedCountry} />
         </div>
