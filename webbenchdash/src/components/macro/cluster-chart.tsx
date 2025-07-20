@@ -21,9 +21,11 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
-  desktop: {
-    label: "value",
-    color: "hsl(var(--chart-1))",
+  value: {
+    color: "var(--chart-1)",
+  },
+  label: {
+    color: "var(--background)",
   },
 } satisfies ChartConfig;
 
@@ -75,7 +77,7 @@ export function ClusterChart({ country }: { country: string }) {
                 cursor={true}
                 content={<ChartTooltipContent hideIndicator />}
               />
-              <Bar dataKey="value" fill="var(--color-desktop)" radius={4} />
+              <Bar dataKey="value" fill="var(--color-value)" radius={4} />
             </BarChart>
           </ChartContainer>
         )}

@@ -28,10 +28,10 @@ import { useEffect, useState } from "react";
 
 const chartConfig = {
   value: {
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   label: {
-    color: "hsl(var(--background))",
+    color: "var(--background)",
   },
 } satisfies ChartConfig;
 

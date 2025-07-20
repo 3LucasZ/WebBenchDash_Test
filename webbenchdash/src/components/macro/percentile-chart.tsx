@@ -29,10 +29,10 @@ import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   value: {
-    color: "hsl(var(--chart-1))",
+    color: "var(--chart-1)",
   },
   label: {
-    color: "hsl(var(--background))",
+    color: "var(--background)",
   },
 } satisfies ChartConfig;
 
@@ -97,7 +97,7 @@ export function PercentileChart({ country }: { country: string }) {
               <Bar
                 dataKey="value"
                 layout="vertical"
-                fill="var(--color-desktop)"
+                fill="var(--color-value)"
                 radius={4}
               >
                 {/* <LabelList
