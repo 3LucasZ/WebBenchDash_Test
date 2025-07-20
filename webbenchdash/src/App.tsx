@@ -7,6 +7,7 @@ import { ResilienceDNSRaw } from "./components/macro/resilience-dns-raw";
 import { CountryName } from "./components/macro/country-name";
 import { ThemeProvider } from "./components/theme-provider";
 import { ModeToggle } from "./components/mode-toggle";
+import { NontechRaw } from "./components/macro/nontech-raw";
 
 function App() {
   const [selectedCountry, setSelectedCountry] = useState<string>("");
@@ -39,6 +40,11 @@ function App() {
           setSelectedCountry2={setSelectedCountry2}
         />
         <div className="flex max-w-6xl gap-4 px-4 bottom-3 sticky">
+          {selectedFeature == "reliability" && (
+            <div className="w-1/2">
+              <NontechRaw country={selectedCountry} />
+            </div>
+          )}
           {selectedFeature == "reliability" && (
             <div className="w-1/2">
               <ResilienceDNSRaw

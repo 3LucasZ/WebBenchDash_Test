@@ -1,0 +1,4 @@
+- internet-usage.csv
+  - 2024 https://data.un.org/_Docs/SYB/CSV/SYB67_314_202411_Internet%20Usage.csv
+- hdi.xlsx
+  - 2023 https://hdr.undp.org/sites/default/files/2025_HDR/HDR25_Statistical_Annex_HDI_Table.xlsx

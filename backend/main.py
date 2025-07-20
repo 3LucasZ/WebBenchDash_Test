@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 
 from backend.data_collector.utils import get_gov_sites, get_scope_ccs, get_top_sites, get_unique_domains
-from backend.utils import getProjDir
+from backend.utils import getDataDir, getProjDir
 import country_converter as coco
 
 app = FastAPI()
@@ -70,7 +70,29 @@ def performance(country: str, subset: str):
             if cat != "domain":
                 means[cat] = round(hash(country+cat)/2**64 + 0.5, 2)
         return means
+# --Non-technical dimensions--
 
+
+# Get and clean internet-usage.csv
+it_file = os.path.join(getDataDir(), "internet-usage.csv")
+it_df = pd.read_csv(it_file, skiprows=1)
+it_df = it_df.sort_values("Year", ascending=False).drop_duplicates(
+    subset=['Region/Country/Area'], keep='first')
+it_df['alpha_2'] = coco.convert(
+    names=it_df['Region/Country/Area'], to='ISO2', not_found=None)
+
+
+@app.get("/nontech/{country}")
+def nontech(country: str):
+    country_code = coco.convert(names=[country], to='ISO2')
+    hdi_file = os.path.join(getDataDir(), "hdi.xlsx")
+    _it_df = it_df[it_df['alpha_2'] ==
+                   country_code]
+    try:
+        it = _it_df.iloc[0]['Value']
+    except:
+        it = -1
+    return {"Internet usage": it}
 # DNS resilience
 
 
