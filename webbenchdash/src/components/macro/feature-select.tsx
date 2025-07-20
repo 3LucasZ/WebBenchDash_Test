@@ -47,7 +47,7 @@ export function FeatureSelect({
         </ToggleGroup>
       </div>
       <div className="h-4"></div>
-      <div className="theme-blue">
+      <div>
         <ToggleGroup
           type="single"
           variant="outline"
@@ -60,7 +60,7 @@ export function FeatureSelect({
         >
           <ToggleGroupItem value="gov">
             {/* <ShieldIcon className="h-8 w-8" /> */}
-            <p className="w-50 text-xl theme-blue">Government</p>
+            <p className="w-50 text-xl ">Government</p>
           </ToggleGroupItem>
           <ToggleGroupItem value="top">
             {/* <GaugeIcon className="h-8 w-8" /> */}

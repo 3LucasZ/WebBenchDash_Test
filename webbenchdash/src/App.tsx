@@ -6,6 +6,7 @@ import { PercentileChart } from "./components/macro/percentile-chart";
 import { ResilienceDNSRaw } from "./components/macro/resilience-dns-raw";
 import { CountryName } from "./components/macro/country-name";
 import { ThemeProvider } from "./components/theme-provider";
+import { ModeToggle } from "./components/mode-toggle";
 
 function App() {
   const [selectedCountry, setSelectedCountry] = useState<string>("");
@@ -65,6 +66,7 @@ function App() {
           </div>
           {/* <div className="w-1/3"><SecurityChart /></div> */}
         </div>
+        <ModeToggle />
       </div>
     </ThemeProvider>
   );
