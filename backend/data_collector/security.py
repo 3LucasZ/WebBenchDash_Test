@@ -6,18 +6,19 @@ from backend.data_collector.utils import wrap_domain
 def get_data(domain):
     url = wrap_domain(domain)
     fake_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=True)
-        context = browser.new_context(
-            user_agent=fake_user_agent,
-            viewport={'width': 1920, 'height': 1080},
-            ignore_https_errors=True)
-        page = context.new_page()
-        try:
+    try:
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=True)
+            context = browser.new_context(
+                user_agent=fake_user_agent,
+                viewport={'width': 1920, 'height': 1080},
+                ignore_https_errors=True)
+            page = context.new_page()
+
             response = page.goto(url, wait_until="domcontentloaded")
             is_https = response.url[:5] == "https"
 
-            security_protocol = "None"
+            security_protocol = "none"
             if is_https:
                 security = response.security_details()
                 security_protocol = security["protocol"]
@@ -42,20 +43,22 @@ def get_data(domain):
                    "is_v6": is_v6,
                    "http_protocol": http_protocol,
                    "3rd_cookies": len(external_cookies),
-                   "3rd_cookie_domains": len(set(external_cookies))}
-        except Exception as e:
-            print(e)
-            ret = {"domain": domain,
-                   "security_protocol": "none",
-                   "is_https": "none",
-                   "is_v6": "none",
-                   "http_protocol": "none",
-                   "3rd_cookies": "none",
-                   "3rd_cookie_domains": "none"}
+                   "3rd_cookie_domains": len(set(external_cookies)),
+                   "bad": False}
             page.close()
             context.close()
             browser.close()
-            return ret
+    except Exception as e:
+        print(e)
+        ret = {"domain": domain,
+               "security_protocol": "none",
+               "is_https": False,
+               "is_v6": False,
+               "http_protocol": "none",
+               "3rd_cookies": 0,
+               "3rd_cookie_domains": 0,
+               "bad": True}
+    return ret
 
 
 if __name__ == "__main__":
