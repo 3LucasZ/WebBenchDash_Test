@@ -1,14 +1,8 @@
-import csv
-from functools import partial
 import ipaddress
-from multiprocessing import Lock, Manager, Pool
-import multiprocessing
 import os
 import socket
 import dns.resolver
-from tqdm import tqdm
 
-from backend.data_collector.utils import read_existing_domains, write_result
 from backend.utils import getProjDir
 
 # for reference only if you want to download the list!
@@ -100,29 +94,6 @@ def get_asn_info(ip):
     }
 
 
-def test(domain_name):
-    nameservers = get_nameservers(domain_name)
-    print(f"Nameservers for {domain_name}:", nameservers)
-    # collect IPv4 addresses
-    ipv4s = set()
-    for nameserver in nameservers:
-        ipv4s.update(nameserver[1])
-    print("Namserver IPv4s:", ipv4s)
-    print([f"anycast: {is_anycast(ip)}" for ip in ipv4s])
-    # collect IPv6 addresses
-    ipv6s = set()
-    for nameserver in nameservers:
-        ipv6s.update(nameserver[2])
-    print("Nameserver IPv6s:", ipv6s)
-    # collect ASNs from IPv4s
-    asns = set()
-    for ipv4 in ipv4s:
-        info = get_asn_info(ipv4)
-        print(info)
-        asns.add(info["asn"])
-    print("Nameserver ASNs:", asns)
-
-
 def get_data(domain_name):
     nameservers = get_nameservers(domain_name)
     # collect IPv4 addresses
@@ -149,27 +120,6 @@ def get_data(domain_name):
             "ipv6s": len(ipv6s)}
 
 
-def process_and_write(domain_name, lock, output_file):
-    result = get_data(domain_name)
-    write_result(lock, output_file, result)
-
-
-def collect(domain_names, csv_file):
-    existing_domain_names = read_existing_domains(csv_file)
-    domain_names = [d for d in domain_names if d not in existing_domain_names]
-
-    manager = Manager()
-    lock = manager.Lock()
-    with Pool(processes=multiprocessing.cpu_count()) as pool:
-        func = partial(process_and_write, lock=lock, output_file=csv_file)
-        for _ in tqdm(pool.imap_unordered(func, domain_names),
-                      total=len(domain_names)):
-            pass
-
-
 if __name__ == "__main__":
-    # test("www.usa.gov")
-    test("www.usa.gov.external-domains-production.cloud.gov")
-    # urls = ["www.usa.gov"]
-    # for url in urls:
-    #     print(url, get_data(url))
+    data = get_data("www.usa.gov.external-domains-production.cloud.gov")
+    print(data)
