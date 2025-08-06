@@ -1,22 +1,20 @@
-import json
 import os
-import random
 
-import tldextract
-from backend.data_collector import resilience_dns
-import country_converter as coco
-from urllib.parse import urlparse
+from backend.data_collector import resilience_dns, security
 
+from backend.data_collector import utils
 from backend.data_collector.utils import get_gov_sites, get_top_sites, get_unique_domains
-from backend.utils import getProjDir
+from backend.utils import clean_urls, getProjDir
 
 
 def collect(sites):
     domains = get_unique_domains(sites)
     print("sites:", len(sites),
-          "domains:", len(domains))
-    resilience_dns.collect(domains, os.path.join(
+          "| domains:", len(domains))
+    utils.collect(resilience_dns.get_data, domains, os.path.join(
         getProjDir(), 'data', 'resilience_dns.csv'))
+    utils.collect(security.get_data, sites, os.path.join(
+        getProjDir(), 'data', 'security.csv'))
 
 
 if __name__ == "__main__":
@@ -25,4 +23,6 @@ if __name__ == "__main__":
     top_sites = get_top_sites()
     print(len(top_sites))
     sites = gov_sites + top_sites
+    sites = clean_urls(sites)
+    print(len(sites))
     collect(sites)
