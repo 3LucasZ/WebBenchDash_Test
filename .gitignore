@@ -16,3 +16,4 @@ vulnerability.csv
 *.csv
 *.xlsx
 Government_Resources
+backend/blocklist.json
