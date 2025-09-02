@@ -136,12 +136,20 @@ const MapChart = ({
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
-                      fill={d ? colorScale(Number(d["2017"])) : "#F5F4F6"}
+                      // fill={d ? colorScale(Number(d["2017"])) : "#F5F4F6"}
+                      // fill="#DDDDDD"
+                      fill={
+                        [selectedCountry, selectedCountry2].includes(
+                          geo.properties.name
+                        )
+                          ? "#f87171"
+                          : "#DEDEDE"
+                      }
                       stroke={
                         [selectedCountry, selectedCountry2].includes(
                           geo.properties.name
                         )
-                          ? "#4D4D4D"
+                          ? "#dc2626"
                           : "#FFFFFF"
                       }
                       strokeWidth={

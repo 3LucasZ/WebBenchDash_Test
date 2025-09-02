@@ -6,6 +6,7 @@ import { Skeleton } from "../ui/skeleton";
 import { MyRadialChart } from "../micro/MyRadialChart";
 import { MyPieChart } from "../micro/MyPieChart";
 import { featureData, label_display, unit_convert } from "../widget/data";
+import { MyStat } from "../micro/MyStat";
 
 export function DataCountry({
   title,
@@ -57,7 +58,7 @@ export function DataCountry({
             <Skeleton className="h-4 w-[250px]" />
           </div>
         ) : (
-          <div className="flex flex-row content-start items-center gap-4">
+          <div className="flex flex-row content-start items-center gap-8">
             {proportionFeatures.map((feature) => (
               <MyRadialChart p={data[feature]} feature={feature} />
             ))}
@@ -65,11 +66,7 @@ export function DataCountry({
               <MyPieChart data={filterByPrefix(data, prefix)} />
             ))}
             {regFeatures.map((item) => (
-              <div>
-                {label_display(item) +
-                  ": " +
-                  unit_convert(featureData[item].convert, data[item])}
-              </div>
+              <MyStat label={item} value={data[item]} />
             ))}
           </div>
         )}
