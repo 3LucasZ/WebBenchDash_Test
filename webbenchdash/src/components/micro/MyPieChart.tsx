@@ -9,50 +9,24 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const TAILWIND_COLOR_MAP = {
-  "slate-950": "210 20% 9%",
-  "slate-900": "215 18% 13%",
-  "slate-800": "215 14% 17%",
-  "slate-700": "215 11% 29%",
-  "slate-600": "215 8% 39%",
-  "slate-500": "215 10% 50%",
-  "slate-400": "215 14% 65%",
-  "slate-300": "215 20% 77%",
-  "slate-200": "215 28% 86%",
-  "slate-100": "220 20% 88%",
-  "slate-50": "214 32% 91%",
-};
-const COLOR_KEYS = ["slate-950", "slate-700", "slate-500", "slate-300"];
-
 const generateChartConfig = (data: Record<string, number>): ChartConfig => {
   const config: ChartConfig = {};
   const dataKeys = Object.keys(data);
-
   dataKeys.forEach((category: string, index) => {
-    const colorKey = COLOR_KEYS[
-      index % COLOR_KEYS.length
-    ] as keyof typeof TAILWIND_COLOR_MAP;
-    const colorValue = TAILWIND_COLOR_MAP[colorKey];
-
     config[category] = {
       label: category.charAt(0).toUpperCase() + category.slice(1),
-      color: `hsl(${colorValue})`,
     };
   });
   return config;
 };
 
 const processChartData = (data: Record<string, number>) => {
+  const colors = ["--color-red-400", "--color-amber-400", "--color-green-400"];
   return Object.entries(data).map(([category, proportion], index) => {
-    const colorKey = COLOR_KEYS[
-      index % COLOR_KEYS.length
-    ] as keyof typeof TAILWIND_COLOR_MAP;
-    const colorValue = TAILWIND_COLOR_MAP[colorKey];
-
     return {
       label: category,
       value: proportion,
-      fill: `hsl(${colorValue})`,
+      fill: `var(${colors[index % colors.length]})`,
     };
   });
 };

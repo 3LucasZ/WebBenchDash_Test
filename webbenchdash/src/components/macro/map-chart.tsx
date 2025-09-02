@@ -45,7 +45,7 @@ const MapChart = ({
   }, []);
 
   const handleCountryClick = (geo: GeoGeometryObjects) => {
-    console.log(geo);
+    // console.log(geo);
     if (geo.properties.name == selectedCountry) {
       setSelectedCountry(selectedCountry2);
       setSelectedCountry2("");

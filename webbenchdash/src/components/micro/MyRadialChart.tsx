@@ -26,7 +26,9 @@ export function MyRadialChart({
       label: feature,
     },
   } satisfies ChartConfig;
-  const chartData = [{ name: feature, value: p * 100 }];
+  const chartData = [
+    { name: feature, value: p * 100, fill: `var(--color-blue-500)` },
+  ];
   return (
     <ChartContainer
       config={chartConfig}
