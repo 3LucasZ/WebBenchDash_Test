@@ -1,0 +1,11 @@
+pyenv virtualenv 3.12 webdash
+pyenv activate webdash                                                                                                                                               ─╯
+pyenv versions
+* webdash --> /Users/lucaszheng/.pyenv/versions/3.12.10/envs/webdash (set by PYENV_VERSION environment variable)
+Append /bin/python and use this directory for VScode interpreter
+# Libraries
+playwright
+"fastapi[standard]"
+pandas
+tldextract
+tqdm
