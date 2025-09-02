@@ -2,5 +2,7 @@
   "terminal.integrated.env.osx": {
     "PYTHONPATH": "/Users/lucaszheng/Documents/GitHub/WebBenchDash_Test"
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.pythonProjects": []
 }

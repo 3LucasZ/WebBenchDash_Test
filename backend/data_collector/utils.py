@@ -104,7 +104,7 @@ def process_and_write(domain_name, get_data, lock, output_file):
     write_result(lock, output_file, result)
 
 
-def collect(get_data, domain_names, csv_file):
+def collect(get_data, domain_names, csv_file, single_threaded=False):
     print("Collecting to:", csv_file)
     existing_domain_names = read_existing_domains(csv_file)
     domain_names = list(set(
@@ -112,7 +112,7 @@ def collect(get_data, domain_names, csv_file):
 
     manager = Manager()
     lock = manager.Lock()
-    with Pool(processes=multiprocessing.cpu_count()) as pool:
+    with Pool(processes=1 if single_threaded else multiprocessing.cpu_count()) as pool:
         func = partial(process_and_write, get_data=get_data,
                        lock=lock, output_file=csv_file)
         for _ in tqdm(pool.imap_unordered(func, domain_names),

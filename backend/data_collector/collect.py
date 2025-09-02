@@ -1,6 +1,6 @@
 import os
 
-from backend.data_collector import resilience_dns, security
+from backend.data_collector import performance, resilience_dns, security
 
 from backend.data_collector import utils
 from backend.data_collector.utils import get_gov_sites, get_top_sites, get_unique_domains
@@ -15,6 +15,8 @@ def collect(sites):
         getProjDir(), 'data', 'resilience_dns.csv'))
     utils.collect(security.get_data, sites, os.path.join(
         getProjDir(), 'data', 'security.csv'))
+    utils.collect(performance.get_data, sites, os.path.join(
+        getProjDir(), 'data', 'performance.csv'), single_threaded=True)
 
 
 if __name__ == "__main__":
