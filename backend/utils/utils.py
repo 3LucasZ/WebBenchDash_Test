@@ -3,22 +3,16 @@ import os
 
 import requests
 
-
-def getProjDir():
-    return os.path.dirname(os.path.abspath(__file__))
+from backend.config import EXTERNAL_DIR
 
 
-def getDataDir():
-    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "datasets")
-
-
-def clean_urls(domains):
-    domain_blocklist = get_block_list()
+def remove_blocklist_urls(domains):
+    domain_blocklist = get_blocklist()
     return [domain for domain in domains if domain not in domain_blocklist]
 
 
-def get_block_list():
-    filepath = os.path.join(getProjDir(), "blocklist.json")
+def get_blocklist():
+    filepath = os.path.join(EXTERNAL_DIR, "blocklist.json")
     if (os.path.exists(filepath)):
         with open(filepath, 'r') as f:
             return json.load(f)

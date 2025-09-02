@@ -56,7 +56,6 @@ export function FeatureSelect({
             if (newValue === null || newValue === "") return;
             onValue2Change(newValue);
           }}
-          className="theme-blue"
         >
           <ToggleGroupItem value="gov">
             {/* <ShieldIcon className="h-8 w-8" /> */}

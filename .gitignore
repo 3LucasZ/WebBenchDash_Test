@@ -7,13 +7,11 @@ __pycache__
 build
 node_modules
 
-# Data
-features.json
-vulnerability.csv
-
 # Misc
 .DS_Store
+
+# Datasets
 *.csv
 *.xlsx
 Government_Resources
-backend/blocklist.json
+blocklist.json

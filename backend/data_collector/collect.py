@@ -3,8 +3,8 @@ import os
 from backend.data_collector import performance, resilience_dns, security
 
 from backend.data_collector import utils
-from backend.data_collector.utils import get_gov_sites, get_top_sites, get_unique_domains
-from backend.utils import clean_urls, getProjDir
+from backend.data_collector.utils import COUNTRY_CODES, NUM_SITES, get_gov_sites, get_top_sites, get_unique_domains
+from backend.utils import remove_blocklist_urls, getProjDir
 
 
 def collect(sites):
@@ -20,11 +20,10 @@ def collect(sites):
 
 
 if __name__ == "__main__":
-    gov_sites = get_gov_sites()
-    print(len(gov_sites))
-    top_sites = get_top_sites()
-    print(len(top_sites))
-    sites = gov_sites + top_sites
-    sites = clean_urls(sites)
-    print(len(sites))
-    collect(sites)
+    work_queue = []
+    for country_code in COUNTRY_CODES:
+        country_gov_sites = get_gov_sites(NUM_SITES)
+        country_top_sites = get_top_sites(NUM_SITES)
+        work_queue.extend([(country_code, site)
+                          for site in country_gov_sites + country_top_sites])
+    collect(work_queue)

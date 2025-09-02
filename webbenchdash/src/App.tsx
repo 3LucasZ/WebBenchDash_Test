@@ -44,7 +44,7 @@ function App() {
           setSelectedCountry2={setSelectedCountry2}
         />
         {/* flex flex-col gap-4 */}
-        <div className="px-4 pb-4 bottom-0 sticky">
+        <div className="mx-4 right-4 bottom-4 sticky">
           {["reliability", "performance", "security"].map((feature) => (
             <Widget
               selectedCountry={selectedCountry}

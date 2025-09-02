@@ -9,9 +9,9 @@ from backend.utils import getProjDir
 # ipv4_anycast_list_url = "https://raw.githubusercontent.com/bgptools/anycast-prefixes/refs/heads/master/anycatch-v4-prefixes.txt"
 # ipv6_anycast_list_url = "https://raw.githubusercontent.com/bgptools/anycast-prefixes/refs/heads/master/anycatch-v6-prefixes.txt"
 ipv4_anycast_list_path = os.path.join(
-    getProjDir(), "data_collector", "anycatch-v4-prefixes.txt")
+    getProjDir(), "external", "anycatch-v4-prefixes.txt")
 ipv6_anycast_list_path = os.path.join(
-    getProjDir(), "data_collector", "anycatch-v6-prefixes.txt")
+    getProjDir(), "external", "anycatch-v6-prefixes.txt")
 
 with open(ipv4_anycast_list_path, 'r') as f:
     ipv4_anycast_prefixes = [ipaddress.ip_network(
