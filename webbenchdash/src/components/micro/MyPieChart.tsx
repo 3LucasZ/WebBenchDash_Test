@@ -57,8 +57,13 @@ const processChartData = (data: Record<string, number>) => {
   });
 };
 
-export function MyPieChart({ data }: { data: Record<string, number> }) {
-  const radius = 60;
+export function MyPieChart({
+  data = { c1: 0.2, c2: 0.3, c3: 0.5 },
+}: {
+  data: Record<string, number>;
+}) {
+  const outerRadius = 55;
+  const chartSize = outerRadius * 2;
   const processedData = processChartData(data);
   const dynamicChartConfig = generateChartConfig(data);
 
@@ -66,14 +71,15 @@ export function MyPieChart({ data }: { data: Record<string, number> }) {
     <ChartContainer
       config={dynamicChartConfig}
       className="[&_.recharts-text]:fill-background"
+      style={{ width: chartSize, height: chartSize }}
     >
-      <PieChart>
+      <PieChart width={chartSize} height={chartSize}>
         <ChartTooltip content={<ChartTooltipContent hideLabel />} />
         <Pie
           data={processedData}
           nameKey="label"
           dataKey="value"
-          outerRadius={radius}
+          outerRadius={outerRadius}
         >
           <LabelList
             dataKey="label"

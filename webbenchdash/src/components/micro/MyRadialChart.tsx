@@ -10,10 +10,17 @@ import {
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 
-export function MyRadialChart({ p, feature }: { p: number; feature: string }) {
+export function MyRadialChart({
+  p = 0.33,
+  feature = "feature",
+}: {
+  p: number;
+  feature: string;
+}) {
   const outerRadius = 70;
   const thickness = 20;
   const innerRadius = outerRadius - thickness;
+  const chartSize = innerRadius * 2 + (thickness * 2) / 5;
   const chartConfig = {
     feature: {
       label: feature,
@@ -21,7 +28,10 @@ export function MyRadialChart({ p, feature }: { p: number; feature: string }) {
   } satisfies ChartConfig;
   const chartData = [{ name: feature, value: p * 100 }];
   return (
-    <ChartContainer config={chartConfig}>
+    <ChartContainer
+      config={chartConfig}
+      style={{ width: chartSize, height: chartSize }}
+    >
       <RadialBarChart
         data={chartData}
         startAngle={0}
@@ -61,7 +71,7 @@ export function MyRadialChart({ p, feature }: { p: number; feature: string }) {
                     <tspan
                       x={viewBox.cx}
                       y={(viewBox.cy || 0) + 24}
-                      className="fill-muted-foreground text-sm"
+                      className="fill-muted-foreground text-xs"
                     >
                       {feature}
                     </tspan>

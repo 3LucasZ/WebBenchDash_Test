@@ -1,23 +1,20 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
+import { MyRadialChart } from "../micro/MyRadialChart";
+import { MyPieChart } from "../micro/MyPieChart";
+import { PieChart } from "lucide-react";
 
-const chartConfig = {
-  value: {
-    color: "var(--chart-1)",
-  },
-  label: {
-    color: "var(--background)",
-  },
-} satisfies ChartConfig;
-
-export function ResilienceDNSRaw({
+export function DataRaw({
+  title,
+  path,
   country,
   subset,
 }: {
+  title: string;
+  path: string;
   country: string;
   subset: string;
 }) {
@@ -25,7 +22,7 @@ export function ResilienceDNSRaw({
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (country) {
-      fetch("http://0.0.0.0:8000/resilience-dns/" + country + "/" + subset)
+      fetch(`http://0.0.0.0:8000/${path}/${country}/${subset}`)
         .then((res) => res.json())
         .then((json) => {
           const transformed = Object.entries(json).map(([key, value]) => ({
@@ -44,7 +41,7 @@ export function ResilienceDNSRaw({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>DNS Resilience</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent className="h-60">
         {loading ? (
