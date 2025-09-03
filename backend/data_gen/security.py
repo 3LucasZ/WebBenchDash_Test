@@ -1,10 +1,9 @@
 from playwright.sync_api import sync_playwright
 
-from backend.data_collector.utils import wrap_domain
+from backend.data_gen.utils import wrap_domain
 
 
-def get_data(domain):
-    url = wrap_domain(domain)
+def get_data(url, verbose=False):
     fake_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
     try:
         with sync_playwright() as playwright:
@@ -34,10 +33,10 @@ def get_data(domain):
             cookies = context.cookies()
             external_cookies = []
             for cookie in cookies:
-                if cookie["domain"] in domain:
+                if cookie["domain"] in url:
                     external_cookies.append(cookie["domain"])
 
-            ret = {"domain": domain,
+            ret = {"bad": False,
                    "security_protocol": security_protocol,
                    "is_https": is_https,
                    "is_v6": is_v6,
@@ -50,17 +49,20 @@ def get_data(domain):
             browser.close()
     except Exception as e:
         print(e)
-        ret = {"domain": domain,
-               "security_protocol": "none",
+        ret = {"bad": True,
+               "security_protocol": "",
                "is_https": False,
                "is_v6": False,
-               "http_protocol": "none",
+               "http_protocol": "",
                "3rd_cookies": 0,
                "3rd_cookie_domains": 0,
-               "bad": True}
-    return ret
+               }
+    finally:
+        if verbose:
+            print(ret)
+        return ret
 
 
 if __name__ == "__main__":
-    data = get_data("google.com")
+    data = get_data("https://google.com")
     print(data)

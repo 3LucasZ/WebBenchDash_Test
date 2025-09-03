@@ -2,7 +2,6 @@ import json
 import random
 import pandas as pd
 import tldextract
-from backend.utils.utils import getProjDir
 import country_converter as coco
 import csv
 from functools import partial
@@ -50,22 +49,24 @@ def write_result(lock, output_file, result):
             writer.writerow(result)
 
 
-def process_and_write(domain_name, get_data, lock, output_file):
-    result = get_data(domain_name)
+def process_and_write(wqe, get_json_for_url, lock, output_file):
+    # get_json_for_url works on urls, transform it to work on work_queue elements
+    country_code, isGov, url = wqe
+    result = {"url": url, "cc": country_code,
+              "gov": isGov, **get_json_for_url(url)}
+    # print(result)
     write_result(lock, output_file, result)
 
 
-def collect(get_data, domain_names, csv_file, single_threaded=False):
+def collect(get_json_for_url, work_queue, csv_file, single_threaded=False):
     print("Collecting to:", csv_file)
-    existing_domain_names = read_existing_domains(csv_file)
-    domain_names = list(set(
-        [d for d in domain_names if d not in existing_domain_names]))
+    # TODO: remove work queue elements processed already
 
     manager = Manager()
     lock = manager.Lock()
     with Pool(processes=1 if single_threaded else multiprocessing.cpu_count()) as pool:
-        func = partial(process_and_write, get_data=get_data,
+        func = partial(process_and_write, get_json_for_url=get_json_for_url,
                        lock=lock, output_file=csv_file)
-        for _ in tqdm(pool.imap_unordered(func, domain_names),
-                      total=len(domain_names)):
+        for _ in tqdm(pool.imap_unordered(func, work_queue),
+                      total=len(work_queue)):
             pass

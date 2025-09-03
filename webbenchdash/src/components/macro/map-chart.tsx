@@ -13,8 +13,10 @@ import {
 import { Slider } from "../ui/slider";
 import { Toggle } from "../ui/toggle";
 import { Italic, ZoomInIcon } from "lucide-react";
+import { iso3_to_iso2 } from "@/lib/country_convert";
 
 const geoUrl = "/features.json";
+const countryCodesUrl = "/country_codes.json";
 
 const colorScale = scaleLinear<string>()
   .domain([0.29, 0.68])
@@ -32,6 +34,7 @@ const MapChart = ({
   setSelectedCountry2: Function;
 }) => {
   const [autoZoom, setAutoZoom] = useState(false);
+  const [countriesInScope, setCountriesInScope] = useState<string[]>([]);
   const [data, setData] = useState<DSVRowArray<string> | null>(null);
   const [camera, setCamera] = useState<{
     center: [number, number];
@@ -39,6 +42,12 @@ const MapChart = ({
   }>({ center: [0, 0], zoom: 1 });
 
   useEffect(() => {
+    fetch(countryCodesUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setCountriesInScope(data);
+      });
+
     csv(`/vulnerability.csv`).then((data) => {
       setData(data);
     });
@@ -130,6 +139,21 @@ const MapChart = ({
                   reorderedGeographies.push(selectedGeo);
                 }
                 return reorderedGeographies.map((geo) => {
+                  const isInScope = countriesInScope.includes(
+                    iso3_to_iso2(geo.id)
+                  );
+                  var fill: string;
+                  if (!isInScope) {
+                    fill = "#f0f0f0";
+                  } else if (
+                    [selectedCountry, selectedCountry2].includes(
+                      geo.properties.name
+                    )
+                  ) {
+                    fill = "#f87171";
+                  } else {
+                    fill = "#d0d0d0";
+                  }
                   const d = data.find((s) => s.ISO3 === geo.id);
                   // console.log(geo);
                   return (
@@ -138,13 +162,7 @@ const MapChart = ({
                       geography={geo}
                       // fill={d ? colorScale(Number(d["2017"])) : "#F5F4F6"}
                       // fill="#DDDDDD"
-                      fill={
-                        [selectedCountry, selectedCountry2].includes(
-                          geo.properties.name
-                        )
-                          ? "#f87171"
-                          : "#DEDEDE"
-                      }
+                      fill={fill}
                       stroke={
                         [selectedCountry, selectedCountry2].includes(
                           geo.properties.name

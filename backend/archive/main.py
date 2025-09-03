@@ -5,8 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 
-from backend.data_collector.utils import get_gov_sites, get_scope_ccs, get_top_sites, get_unique_domains
-from backend.utils import getDataDir, getProjDir
+from backend.utils.utils import getDataDir, getProjDir
 import country_converter as coco
 
 app = FastAPI()

@@ -7,11 +7,6 @@ from playwright.sync_api import sync_playwright
 
 def get_data(url, verbose=False):
     port = 9222
-    ret = {"domain": url, "bad": True}
-    keys = ["speed_index", "ttfb", "num_objects",
-            "sz_objects", "num_js_objects", "servers", "origins"]
-    for key in keys:
-        ret[key] = 0
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(
@@ -45,20 +40,20 @@ def get_data(url, verbose=False):
 
             report = json.loads(stdout)
 
-            # milliseconds
-            ret["speed_index"] = round(
+            # ms
+            speed_index = round(
                 report["audits"]["speed-index"]["numericValue"])
-            # milliseconds
-            ret["ttfb"] = round(
+            # ms
+            ttfb = round(
                 report["audits"]["server-response-time"]["numericValue"])
             resources = report["audits"]["resource-summary"]["details"]["items"]
             for item in resources:
                 if item["resourceType"] == "total":
-                    ret["num_objects"] = item["requestCount"]
+                    num_objects = item["requestCount"]
                     # bytes
-                    ret["sz_objects"] = item["transferSize"]
+                    sz_objects = item["transferSize"]
                 elif item["resourceType"] == "script":
-                    ret["num_js_objects"] = item["requestCount"]
+                    num_js_objects = item["requestCount"]
             requests = report["audits"]["network-requests"]["details"]["items"]
             req_urls = [request["url"] for request in requests]
             servers = set()
@@ -70,23 +65,34 @@ def get_data(url, verbose=False):
                     origin = (parsed_url.scheme,
                               parsed_url.hostname, parsed_url.port)
                     origins.add(origin)
-            ret["servers"] = len(servers)
-            ret["origins"] = len(origins)
-            ret["bad"] = False
-            if verbose:
-                print("--- Performance Results ---")
-                print(ret)
-                print("-------------------------")
-
-            # The full JSON report is available in the 'report' variable
+            servers = len(servers)
+            origins = len(origins)
             # You could save it to a file if needed:
             # with open("lighthouse-report.json", "w") as f:
             #     json.dump(report, f, indent=2)
+            ret = {"bad": False,
+                   "speed_index": speed_index,
+                   "ttfb": ttfb,
+                   "num_objects": num_objects,
+                   "sz_objects": sz_objects,
+                   "num_js_objects": num_js_objects,
+                   "servers": servers,
+                   "origins": origins}
+    except:
+        ret = {
+            "bad": True,
+            "speed_index": 0,
+            "ttfb": 0,
+            "num_objects": 0,
+            "sz_objects": 0,
+            "num_js_objects": 0,
+            "servers": 0,
+            "origins": 0}
     finally:
-        # browser.close()
+        if verbose:
+            print(ret)
         return ret
 
 
 if __name__ == "__main__":
-    get_data("https://google.com", True)
     get_data("https://google.com", True)

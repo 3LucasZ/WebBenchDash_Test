@@ -50,23 +50,22 @@ def clear_sites(csv_path):
         os.remove(csv_path)
 
 
-def put_sites(country_code, sites, csv_path):
+def put_sites(country_code, is_gov, sites, csv_path):
     try:
         with open(csv_path, mode='a', newline='', encoding='utf-8') as csv_file:
             writer = csv.writer(csv_file)
             for site in sites:
-                writer.writerow([country_code, site])
+                writer.writerow([country_code, is_gov, site])
     except Exception as e:
         print(f"An error occurred: {e}")
 
 
 if __name__ == "__main__":
-    clear_sites(os.path.join(DATA_DIR, "gov_sites.csv"))
-    clear_sites(os.path.join(DATA_DIR, "top_sites.csv"))
+    clear_sites(os.path.join(DATA_DIR, "sites.csv"))
     for country_code in COUNTRY_CODES:
         country_gov_sites = get_gov_sites(country_code, NUM_SITES)
-        put_sites(country_code, country_gov_sites,
-                  os.path.join(DATA_DIR, "gov_sites.csv"))
+        put_sites(country_code, True, country_gov_sites,
+                  os.path.join(DATA_DIR, "sites.csv"))
         country_top_sites = get_top_sites(country_code, NUM_SITES)
-        put_sites(country_code, country_top_sites,
-                  os.path.join(DATA_DIR, "top_sites.csv"))
+        put_sites(country_code, False, country_top_sites,
+                  os.path.join(DATA_DIR, "sites.csv"))

@@ -3,15 +3,16 @@ import os
 import socket
 import dns.resolver
 
-from backend.utils import getProjDir
+from backend.utils.config import EXTERNAL_DIR
+
 
 # for reference only if you want to download the list!
 # ipv4_anycast_list_url = "https://raw.githubusercontent.com/bgptools/anycast-prefixes/refs/heads/master/anycatch-v4-prefixes.txt"
 # ipv6_anycast_list_url = "https://raw.githubusercontent.com/bgptools/anycast-prefixes/refs/heads/master/anycatch-v6-prefixes.txt"
 ipv4_anycast_list_path = os.path.join(
-    getProjDir(), "external", "anycatch-v4-prefixes.txt")
+    EXTERNAL_DIR, "anycatch-v4-prefixes.txt")
 ipv6_anycast_list_path = os.path.join(
-    getProjDir(), "external", "anycatch-v6-prefixes.txt")
+    EXTERNAL_DIR, "anycatch-v6-prefixes.txt")
 
 with open(ipv4_anycast_list_path, 'r') as f:
     ipv4_anycast_prefixes = [ipaddress.ip_network(
@@ -94,7 +95,7 @@ def get_asn_info(ip):
     }
 
 
-def get_data(domain_name):
+def get_data(domain_name, verbose=False):
     nameservers = get_nameservers(domain_name)
     # collect IPv4 addresses
     ipv4s = set()
@@ -112,14 +113,17 @@ def get_data(domain_name):
     for ipv4 in ipv4s:
         info = get_asn_info(ipv4)
         asns.add(info["asn"])
-    return {"domain": domain_name,
-            "AS spread": len(asns),
-            "ipv4 anycast": ipv4_anycast,
-            "ipv6 anycast": ipv6_anycast,
-            "ipv4s": len(ipv4s),
-            "ipv6s": len(ipv6s)}
+    ret = {
+        "bad": False,
+        "AS spread": len(asns),
+        "ipv4 anycast": ipv4_anycast,
+        "ipv6 anycast": ipv6_anycast,
+        "ipv4s": len(ipv4s),
+        "ipv6s": len(ipv6s)}
+    if verbose:
+        print(ret)
+    return ret
 
 
 if __name__ == "__main__":
-    data = get_data("www.usa.gov.external-domains-production.cloud.gov")
-    print(data)
+    get_data("www.usa.gov.external-domains-production.cloud.gov", verbose=True)
