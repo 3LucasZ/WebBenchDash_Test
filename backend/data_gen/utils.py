@@ -2,7 +2,7 @@ import json
 import random
 import pandas as pd
 import tldextract
-from backend.utils import getProjDir
+from backend.utils.utils import getProjDir
 import country_converter as coco
 import csv
 from functools import partial
@@ -10,54 +10,6 @@ from multiprocessing import Manager, Pool
 import multiprocessing
 import os
 from tqdm import tqdm
-
-countries = ["USA", "Netherlands", "South Korea",
-             "Belgium", "Germany", "Australia"]
-countries = ["USA", "Canada"]
-COUNTRY_CODES = coco.convert(names=countries, to='ISO2')
-NUM_SITES = 20
-
-
-def get_scope_countries():
-    return countries
-
-
-def get_scope_ccs():
-    return COUNTRY_CODES
-
-
-def get_top_sites(target_cc=None):
-    def helper(target_cc):
-        inFile = os.path.join(getProjDir(), 'top_sites.csv')
-        df = pd.read_csv(inFile)
-        df = df[df["country_code"] == target_cc.lower()]
-        take = min(df.shape[0], NUM_SITES)
-        top_sites = df["origin"].iloc[:take]
-        return top_sites
-    if target_cc is None:
-        ret = []
-        for cc in COUNTRY_CODES:
-            ret.extend(helper(cc))
-        return ret
-    else:
-        return helper(target_cc)
-
-
-'''
-Return first N gov websites from cc that are valid webpages and not blocklisted
-'''
-
-
-def get_gov_sites(target_cc, num_sites):
-    gov_path = os.path.join(getProjDir(), "data_collector", "Government_Resources", 'govtResources_' +
-                            target_cc.upper()+".json")
-    with open(gov_path, 'r') as file:
-        gov_sites = json.load(file)
-    # remove invalid pages
-
-    gov_sites = random.sample(gov_sites, min(NUM_SITES, len(gov_sites)))
-    return gov_sites
-    return helper(target_cc)
 
 
 def get_unique_domains(sites):
