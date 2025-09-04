@@ -20,3 +20,4 @@ blocklist.json
 dist/
 webbenchdash/public/vulnerability.csv
 .env
+lighthouse-report.json
