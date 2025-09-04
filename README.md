@@ -8,7 +8,12 @@
 
 <!-- npm run dev -->
 
+React simple maps with React 19
 https://github.com/zcreativelabs/react-simple-maps/issues/367
+Convert b/w country codes
+https://gist.github.com/maephisto/9228207?permalink_comment_id=1963107#gistcomment-1963107
+Count animation
+https://www.shadcn.io/text/counting-number
 
 ### Justification
 

@@ -104,22 +104,55 @@ export const featureData = {
     convert: [".", "%"],
   },
   http_protocol_h2: {
-    info: "",
+    info: "HTTP/2 is a modern protocol that is faster than HTTP/1.1 but not as advanced as HTTP/3.",
     direction: 0,
     convert: [".", "%"],
   },
   "http_protocol_http/1.1": {
-    info: "",
+    info: "HTTP/1.1 is an older, less efficient version of the HTTP protocol.",
     direction: 0,
     convert: [".", "%"],
   },
-  "3rd_cookies": { info: "", direction: -1, convert: ["u", "u"] },
-  "3rd_cookie_domains": { info: "", direction: -1, convert: ["u", "u"] },
-  is_https: { info: "", direction: 1, convert: [".", "%"] },
-  is_v6: { info: "", direction: 1, convert: [".", "%"] },
-  "security_protocol_TLS 1.2": { info: "", direction: 0, convert: [".", "%"] },
-  "security_protocol_TLS 1.3": { info: "", direction: 1, convert: [".", "%"] },
+
+  "3rd_cookies": {
+    info: "The number of third-party cookies, which are often used for cross-site tracking and advertising.",
+    direction: -1,
+    convert: ["u", "u"],
+  },
+  "3rd_cookie_domains": {
+    info: "The number of unique third-party domains setting cookies, indicating how many different trackers are present.",
+    direction: -1,
+    convert: ["u", "u"],
+  },
+
+  is_https: {
+    info: "Whether the website uses HTTPS to encrypt communication, which is a fundamental security practice. If false, security protocol is none.",
+    direction: 1,
+    convert: [".", "%"],
+  },
+  is_v6: {
+    info: "Whether the website is accessible over IPv6, the most recent version of the Internet Protocol.",
+    direction: 1,
+    convert: [".", "%"],
+  },
+
+  "security_protocol_TLS 1.3": {
+    info: "TLS 1.3 is the latest and most secure version of the TLS protocol, offering stronger encryption and a faster handshake.",
+    direction: 1,
+    convert: [".", "%"],
+  },
+  "security_protocol_TLS 1.2": {
+    info: "TLS 1.2 is a widely used and secure protocol, but it is the predecessor to the more modern TLS 1.3.",
+    direction: 0,
+    convert: [".", "%"],
+  },
+  security_protocol_none: {
+    info: "Indicates no encryption is used (plain HTTP), which is insecure as data is sent in cleartext.",
+    direction: 0,
+    convert: [".", "%"],
+  },
 };
+export const featureSet = Object.keys(featureData);
 export const sourcesCited = [
   "(1) https://github.com/SIDN/domainrd",
   "(2) https://web.eecs.umich.edu/~harshavm/papers/imc11.pdf",
