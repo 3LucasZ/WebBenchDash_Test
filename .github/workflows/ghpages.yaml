@@ -4,7 +4,8 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ['main']
+    tags:
+      - "v*" # This matches tags like v1.0, v1.1.2, etc.
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,7 +18,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: 'pages'
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
@@ -34,10 +35,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm'
+          cache: "npm"
+          cache-dependency-path: webbenchdash/package-lock.json # Point cache to the correct lock file
       - name: Install dependencies
+        working-directory: ./webbenchdash
         run: npm ci
       - name: Build
+        working-directory: ./webbenchdash
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -45,7 +49,7 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           # Upload dist folder
-          path: './webbenchdash/dist'
+          path: "./webbenchdash/dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
