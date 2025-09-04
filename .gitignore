@@ -19,3 +19,4 @@ blocklist.json
 # Builds
 dist/
 webbenchdash/public/vulnerability.csv
+.env
