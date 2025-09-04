@@ -11,9 +11,14 @@ import os
 from tqdm import tqdm
 
 
+def get_domain(site):
+    tlde = tldextract.extract(site)
+    return tlde.domain + "." + tlde.suffix
+
+
 def get_unique_domains(sites):
     return list(
-        set([tldextract.extract(site).domain + "." + tldextract.extract(site).suffix for site in sites]))
+        set([get_domain(site) for site in sites]))
 
 
 def wrap_domain(domain):

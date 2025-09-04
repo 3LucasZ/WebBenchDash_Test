@@ -8,6 +8,8 @@
 
 <!-- npm run dev -->
 
+https://github.com/zcreativelabs/react-simple-maps/issues/367
+
 ### Justification
 
 - http protocol

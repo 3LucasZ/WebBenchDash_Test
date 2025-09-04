@@ -132,7 +132,7 @@ export function label_display(featureName: keyof typeof featureData) {
       : "";
   return featureName.replace(new RegExp("_", "g"), " ") + units;
 }
-export function unit_convert(convert: [string, string], value: number) {
+export function unit_convert(convert: [string, string], value: number): string {
   var LHS;
   const [from, to] = convert;
   if (from == "ms" && to == "s") {
@@ -145,7 +145,7 @@ export function unit_convert(convert: [string, string], value: number) {
     LHS = value;
   }
   if (LHS > 99) {
-    return Math.round(LHS);
+    return String(Math.round(LHS));
   } else {
     return LHS.toPrecision(3);
   }

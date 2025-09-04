@@ -23,15 +23,15 @@ const colorScale = scaleLinear<string>()
   .range(["#ffedea", "#ff5233"]);
 
 const MapChart = ({
-  selectedCountry,
-  setSelectedCountry,
-  selectedCountry2,
-  setSelectedCountry2,
+  selectedIso3: selectedCountry,
+  setSelectedIso3: setSelectedCountry,
+  selectedIso3_2: selectedCountry2,
+  setSelectedIso3_2: setSelectedCountry2,
 }: {
-  selectedCountry: string;
-  setSelectedCountry: Function;
-  selectedCountry2: string;
-  setSelectedCountry2: Function;
+  selectedIso3: string;
+  setSelectedIso3: Function;
+  selectedIso3_2: string;
+  setSelectedIso3_2: Function;
 }) => {
   const [autoZoom, setAutoZoom] = useState(false);
   const [countriesInScope, setCountriesInScope] = useState<string[]>([]);
@@ -55,15 +55,15 @@ const MapChart = ({
 
   const handleCountryClick = (geo: GeoGeometryObjects) => {
     // console.log(geo);
-    if (geo.properties.name == selectedCountry) {
+    if (geo.id == selectedCountry) {
       setSelectedCountry(selectedCountry2);
       setSelectedCountry2("");
-    } else if (geo.properties.name == selectedCountry2) {
+    } else if (geo.id == selectedCountry2) {
       setSelectedCountry2("");
     } else if (!selectedCountry) {
-      setSelectedCountry(geo.properties.name);
+      setSelectedCountry(geo.id);
     } else {
-      setSelectedCountry2(geo.properties.name);
+      setSelectedCountry2(geo.id);
     }
     const centroid = geoCentroid(geo);
     if (autoZoom) {
@@ -119,10 +119,10 @@ const MapChart = ({
               {({ geographies }) => {
                 const reorderedGeographies = [...geographies];
                 const selectedIndex = reorderedGeographies.findIndex(
-                  (geo) => geo.properties.name === selectedCountry
+                  (geo) => geo.id === selectedCountry
                 );
                 const selectedIndex2 = reorderedGeographies.findIndex(
-                  (geo) => geo.properties.name === selectedCountry2
+                  (geo) => geo.id === selectedCountry2
                 );
                 if (selectedIndex !== -1) {
                   const [selectedGeo] = reorderedGeographies.splice(
@@ -146,9 +146,7 @@ const MapChart = ({
                   if (!isInScope) {
                     fill = "#f0f0f0";
                   } else if (
-                    [selectedCountry, selectedCountry2].includes(
-                      geo.properties.name
-                    )
+                    [selectedCountry, selectedCountry2].includes(geo.id)
                   ) {
                     fill = "#f87171";
                   } else {
@@ -164,16 +162,12 @@ const MapChart = ({
                       // fill="#DDDDDD"
                       fill={fill}
                       stroke={
-                        [selectedCountry, selectedCountry2].includes(
-                          geo.properties.name
-                        )
+                        [selectedCountry, selectedCountry2].includes(geo.id)
                           ? "#dc2626"
                           : "#FFFFFF"
                       }
                       strokeWidth={
-                        [selectedCountry, selectedCountry2].includes(
-                          geo.properties.name
-                        )
+                        [selectedCountry, selectedCountry2].includes(geo.id)
                           ? 2
                           : 1
                       }

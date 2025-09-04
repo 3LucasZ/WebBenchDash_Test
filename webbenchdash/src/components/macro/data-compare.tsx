@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import {
   Table,
@@ -11,44 +10,26 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { cn } from "@/lib/utils";
+import { cn, getKeysByPrefix } from "@/lib/utils";
 import { featureData, label_display, unit_convert } from "../widget/data";
 
 export function DataCompare({
   title,
-  path,
-  country1,
-  country2,
-  subset,
+  country_1,
+  country_2,
+  country_1_df,
+  country_2_df,
+  features,
 }: {
   title: string;
-  path: string;
-  country1: string;
-  country2: string;
-  subset: string;
+  country_1: string;
+  country_2: string;
+  country_1_df: Record<string, number>;
+  country_2_df: Record<string, number>;
+  features: string[];
 }) {
-  const [data1, setData1] = useState<Record<string, number>>({});
-  const [data2, setData2] = useState<Record<string, number>>({});
-  const allFeatureNames = Array.from(
-    new Set([...Object.keys(data1), ...Object.keys(data2)])
-  );
-  const loading =
-    Object.keys(data1).length == 0 && Object.keys(data2).length == 0;
-  useEffect(() => {
-    fetch(`http://0.0.0.0:8000/${path}/${country1}/${subset}`)
-      .then((res) => res.json())
-      .then((json) => {
-        setData1(json);
-      })
-      .catch(console.error);
-
-    fetch(`http://0.0.0.0:8000/${path}/${country2}/${subset}`)
-      .then((res) => res.json())
-      .then((json) => {
-        setData2(json);
-      })
-      .catch(console.error);
-  }, [country1, country2, subset]);
+  const loading = country_1_df == null || country_2_df == null;
+  const featuresFull = getKeysByPrefix(country_1_df, features);
 
   return (
     <Card className="max-w-full  overflow-x-auto">
@@ -69,15 +50,15 @@ export function DataCompare({
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[20%]"></TableHead>
-                <TableHead className="w-[15%]">{country1}</TableHead>
-                <TableHead className="w-[15%]">{country2}</TableHead>
+                <TableHead className="w-[15%]">{country_1}</TableHead>
+                <TableHead className="w-[15%]">{country_2}</TableHead>
                 <TableHead className="w-[50%]">Description</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {allFeatureNames.map((featureName) => {
-                const value1 = data1[featureName] ?? 0; // Use 0 if key doesn't exist
-                const value2 = data2[featureName] ?? 0;
+              {featuresFull.map((featureName) => {
+                const value1 = country_1_df[featureName] ?? 0; // Use 0 if key doesn't exist
+                const value2 = country_2_df[featureName] ?? 0;
                 const myFeatureData =
                   featureData[featureName as keyof typeof featureData];
                 const dir = myFeatureData.direction;

@@ -16,10 +16,10 @@ def get_json_for_wqe(wqe, get_json_for_url):
 def generate_data(work_queue):
     utils.collect(resilience_dns.get_data, work_queue, os.path.join(
         DATA_DIR, 'resilience_dns.csv'))
-    utils.collect(security.get_data, work_queue, os.path.join(
-        DATA_DIR, 'security.csv'))
-    utils.collect(performance.get_data, work_queue, os.path.join(
-        DATA_DIR, 'performance.csv'), single_threaded=True)
+    # utils.collect(security.get_data, work_queue, os.path.join(
+    #     DATA_DIR, 'security.csv'))
+    # utils.collect(performance.get_data, work_queue, os.path.join(
+    #     DATA_DIR, 'performance.csv'), single_threaded=True)
 
 
 if __name__ == "__main__":

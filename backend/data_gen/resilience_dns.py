@@ -3,6 +3,7 @@ import os
 import socket
 import dns.resolver
 
+from backend.data_gen.utils import get_domain
 from backend.utils.config import EXTERNAL_DIR
 
 
@@ -95,8 +96,9 @@ def get_asn_info(ip):
     }
 
 
-def get_data(domain_name, verbose=False):
-    nameservers = get_nameservers(domain_name)
+def get_data(url, verbose=False):
+    domain = get_domain(url)
+    nameservers = get_nameservers(domain)
     # collect IPv4 addresses
     ipv4s = set()
     for nameserver in nameservers:

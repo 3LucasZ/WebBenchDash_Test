@@ -1,75 +1,40 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
 import { MyRadialChart } from "../micro/MyRadialChart";
 import { MyPieChart } from "../micro/MyPieChart";
-import { featureData, label_display, unit_convert } from "../widget/data";
 import { MyStat } from "../micro/MyStat";
 
 export function DataCountry({
   title,
-  path,
-  country,
-  subset,
+  df,
   regFeatures,
   proportionFeatures,
   categoricalPrefixes,
 }: {
   title: string;
-  path: string;
-  country: string;
-  subset: string;
+  df: Record<string, number>;
   regFeatures: string[];
   proportionFeatures: string[];
   categoricalPrefixes: string[];
 }) {
-  const [data, setData] = useState<Record<string, number>>({});
-
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    if (country) {
-      fetch(`http://0.0.0.0:8000/${path}/${country}/${subset}`)
-        .then((res) => res.json())
-        .then((json) => {
-          setData(json);
-        })
-        .catch(console.error)
-        .finally(() => setLoading(false));
-    } else {
-      setData({});
-      setLoading(true);
-    }
-  }, [country, subset]);
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        {loading ? (
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[250px]" />
-          </div>
-        ) : (
-          <div className="flex flex-row content-start items-center gap-8">
-            {proportionFeatures.map((feature) => (
-              <MyRadialChart p={data[feature]} feature={feature} />
-            ))}
-            {categoricalPrefixes.map((prefix) => (
-              <MyPieChart data={filterByPrefix(data, prefix)} />
-            ))}
-            {regFeatures.map((item) => (
-              <MyStat label={item} value={data[item]} />
-            ))}
-          </div>
-        )}
+        <div className="flex flex-row content-start items-center gap-8">
+          {proportionFeatures.map((feature) => (
+            <MyRadialChart p={df[feature]} feature={feature} />
+          ))}
+          {categoricalPrefixes.map((prefix) => (
+            <MyPieChart data={filterByPrefix(df, prefix)} />
+          ))}
+          {regFeatures.map((item) => (
+            <MyStat label={item} value={df[item]} />
+          ))}
+        </div>
       </CardContent>
     </Card>
   );

@@ -1,45 +1,66 @@
+import { iso2_to_iso3 } from "@/lib/country_convert";
+import { useCsvData } from "../context/CSVContext";
 import { DataCompare } from "../macro/data-compare";
 import { DataCountry } from "../macro/data-country";
-import { widgetData } from "./data";
+import { widgetData as allWidgetData } from "./data";
+import { cvtRecord } from "@/lib/utils";
 
 export default function Widget({
-  selectedCountry,
-  selectedCountry2,
+  selectedIso3_1,
+  selectedIso3_2,
   selectedSubset,
   feature,
   selectedFeature,
 }: {
-  selectedCountry: string | null;
-  selectedCountry2: string | null;
+  selectedIso3_1: string | null;
+  selectedIso3_2: string | null;
   selectedSubset: string;
   feature: string;
   selectedFeature: string;
 }) {
-  const myData = widgetData[feature as keyof typeof widgetData];
-  if (!selectedCountry || selectedFeature != feature) {
+  if (!selectedIso3_1 || selectedFeature != feature) {
     return <div></div>;
   }
-  if (!selectedCountry2) {
+
+  const { csvData: data } = useCsvData();
+  const widgetData = allWidgetData[feature as keyof typeof allWidgetData];
+  //filter by subset and country
+  const data_t = data.filter(
+    (row) => row.gov == (selectedSubset == "gov" ? "1" : "0")
+  );
+  const data1_t = data_t.filter(
+    (row) => iso2_to_iso3(row.cc) == selectedIso3_1
+  )[0];
+  const data1 = cvtRecord(data1_t);
+
+  if (!selectedIso3_2) {
     return (
       <DataCountry
-        title={myData.title}
-        path={myData.path}
-        country={selectedCountry}
-        subset={selectedSubset}
-        regFeatures={myData.regFeatures}
-        proportionFeatures={myData.proportionFeatures}
-        categoricalPrefixes={myData.categoricalPrefixes}
-      />
-    );
-  } else {
-    return (
-      <DataCompare
-        title={myData.title}
-        path={myData.path}
-        country1={selectedCountry}
-        country2={selectedCountry2}
-        subset={selectedSubset}
+        title={widgetData.title}
+        regFeatures={widgetData.regFeatures}
+        proportionFeatures={widgetData.proportionFeatures}
+        categoricalPrefixes={widgetData.categoricalPrefixes}
+        df={data1}
       />
     );
   }
+  const data2_t = data_t.filter(
+    (row) => iso2_to_iso3(row.cc) == selectedIso3_2
+  )[0];
+  const data2 = cvtRecord(data2_t);
+
+  return (
+    <DataCompare
+      title={widgetData.title}
+      country_1_df={data1}
+      country_2_df={data2}
+      country_1={selectedIso3_1}
+      country_2={selectedIso3_2}
+      features={[
+        ...widgetData.regFeatures,
+        ...widgetData.categoricalPrefixes,
+        ...widgetData.regFeatures,
+      ]}
+    />
+  );
 }
