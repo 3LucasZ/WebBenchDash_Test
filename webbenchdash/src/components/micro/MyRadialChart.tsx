@@ -27,7 +27,11 @@ export function MyRadialChart({
     },
   } satisfies ChartConfig;
   const chartData = [
-    { name: feature, value: p * 100, fill: `var(--color-blue-500)` },
+    {
+      name: feature,
+      value: Math.round(p * 100),
+      fill: `var(--color-blue-500)`,
+    },
   ];
   return (
     <ChartContainer
@@ -68,7 +72,7 @@ export function MyRadialChart({
                       y={viewBox.cy}
                       className="fill-foreground text-2xl font-bold"
                     >
-                      {p * 100}%
+                      {Math.round(p * 100)}%
                     </tspan>
                     <tspan
                       x={viewBox.cx}

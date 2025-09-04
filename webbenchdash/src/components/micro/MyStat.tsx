@@ -9,7 +9,10 @@ export function MyStat({ label, value }: { label: string; value: number }) {
         <div className="">{label_display(label)}</div>
         <div className="text-2xl font-bold ">
           <CountingNumber
-            number={new Date().getFullYear()}
+            number={Number.parseFloat(
+              unit_convert(featureData[label].convert, value)
+            )}
+            transition={{ stiffness: 200, damping: 20 }}
             className="text-4xl"
           />
           {/* {unit_convert(featureData[label].convert, value)} */}
