@@ -1,11 +1,4 @@
-import {
-  Bold,
-  GaugeIcon,
-  Italic,
-  LockIcon,
-  ShieldIcon,
-  Underline,
-} from "lucide-react";
+import { GaugeIcon, LockIcon, ShieldIcon } from "lucide-react";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MyRadialChart } from "../micro/MyRadialChart";
 import { MyPieChart } from "../micro/MyPieChart";
 import { MyStat } from "../micro/MyStat";
+import { WebFeature } from "../widget/data";
 
 export function DataCountry({
   title,
@@ -14,8 +15,8 @@ export function DataCountry({
 }: {
   title: string;
   df: Record<string, number>;
-  regFeatures: string[];
-  proportionFeatures: string[];
+  regFeatures: WebFeature[];
+  proportionFeatures: WebFeature[];
   categoricalPrefixes: string[];
 }) {
   return (
@@ -40,13 +41,17 @@ export function DataCountry({
   );
 }
 
-function filterByPrefix(data: Record<string, number>, prefix: string) {
+function filterByPrefix(
+  data: Record<string, number>,
+  prefix: string
+): Record<string, number> {
+  const accum: Record<string, number> = {};
   return Object.entries(data)
-    .filter(([key, value]) => key.startsWith(prefix)) // Find entries with the correct prefix
+    .filter(([key]) => key.startsWith(prefix)) // Find entries with the correct prefix
     .reduce((acc, [key, value]) => {
       // For each filtered entry, create a new key by removing the prefix
       const newKey = key.substring(prefix.length);
-      acc[newKey] = value; // Add the new key-value pair to our new object
+      acc[newKey] = value; // Add new key-value to object
       return acc;
-    }, {}); // The initial value for our accumulator is an empty object
+    }, accum); // Initial value for accumulator is {}
 }

@@ -7,10 +7,11 @@ import { ThemeProvider } from "./components/theme-provider";
 import { ModeToggle } from "./components/mode-toggle";
 import Widget from "./components/widget/Widget";
 import { CsvDataProvider } from "./components/context/CSVContext";
+import { ISO3 } from "./lib/country_convert";
 
 function App() {
-  const [selectedIso3_1, setSelectedIso3_1] = useState<string>("");
-  const [selectedIso3_2, setSelectedIso3_2] = useState<string>("");
+  const [selectedIso3_1, setSelectedIso3_1] = useState<ISO3>();
+  const [selectedIso3_2, setSelectedIso3_2] = useState<ISO3>();
   const [selectedFeature, setSelectedFeature] = useState("reliability");
   const [selectedSubset, setSelectedSubset] = useState("gov");
 

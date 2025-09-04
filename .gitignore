@@ -15,3 +15,6 @@ node_modules
 *.xlsx
 Government_Resources
 blocklist.json
+
+# Builds
+dist/

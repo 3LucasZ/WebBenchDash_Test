@@ -1,8 +1,13 @@
 import { Card, CardContent } from "../ui/card";
 import { CountingNumber } from "../ui/shadcn-io/counting-number";
-import { featureData, label_display, unit_convert } from "../widget/data";
+import {
+  featureData,
+  label_display,
+  unit_convert,
+  WebFeature,
+} from "../widget/data";
 
-export function MyStat({ label, value }: { label: string; value: number }) {
+export function MyStat({ label, value }: { label: WebFeature; value: number }) {
   return (
     <Card>
       <CardContent className="flex flex-col items-center">

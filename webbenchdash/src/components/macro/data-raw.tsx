@@ -3,9 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
-import { MyRadialChart } from "../micro/MyRadialChart";
-import { MyPieChart } from "../micro/MyPieChart";
-import { PieChart } from "lucide-react";
 
 export function DataRaw({
   title,

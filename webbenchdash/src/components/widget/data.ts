@@ -1,4 +1,4 @@
-export const widgetData = {
+export const widgetData: Record<string, WidgetMeta> = {
   reliability: {
     title: "DNS Resilience",
     path: "resilience-dns",
@@ -28,6 +28,13 @@ export const widgetData = {
     proportionFeatures: ["is_https", "is_v6"],
     categoricalPrefixes: ["security_protocol_", "http_protocol_"],
   },
+};
+export type WidgetMeta = {
+  title: string;
+  path: string;
+  regFeatures: WebFeature[];
+  proportionFeatures: WebFeature[];
+  categoricalPrefixes: string[];
 };
 
 const performance_top_5 =
@@ -152,12 +159,13 @@ export const featureData = {
     convert: [".", "%"],
   },
 };
+export type WebFeature = keyof typeof featureData;
 export const featureSet = Object.keys(featureData);
 export const sourcesCited = [
   "(1) https://github.com/SIDN/domainrd",
   "(2) https://web.eecs.umich.edu/~harshavm/papers/imc11.pdf",
 ];
-export function label_display(featureName: keyof typeof featureData) {
+export function label_display(featureName: WebFeature) {
   const myFeatureData = featureData[featureName];
   const units =
     myFeatureData.convert[1] != "u"
@@ -165,7 +173,7 @@ export function label_display(featureName: keyof typeof featureData) {
       : "";
   return featureName.replace(new RegExp("_", "g"), " ") + units;
 }
-export function unit_convert(convert: [string, string], value: number): string {
+export function unit_convert(convert: string[], value: number): string {
   var LHS;
   const [from, to] = convert;
   if (from == "ms" && to == "s") {

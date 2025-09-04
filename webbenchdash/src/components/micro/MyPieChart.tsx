@@ -12,7 +12,7 @@ import {
 const generateChartConfig = (data: Record<string, number>): ChartConfig => {
   const config: ChartConfig = {};
   const dataKeys = Object.keys(data);
-  dataKeys.forEach((category: string, index) => {
+  dataKeys.forEach((category: string) => {
     config[category] = {
       label: category.charAt(0).toUpperCase() + category.slice(1),
     };

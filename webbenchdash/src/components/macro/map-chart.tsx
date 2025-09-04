@@ -1,7 +1,6 @@
-import React, { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { csv } from "d3-fetch";
-import { scaleLinear } from "d3-scale";
-import { geoCentroid, GeoGeometryObjects, select, type DSVRowArray } from "d3";
+import { geoCentroid, type DSVRowArray } from "d3";
 import {
   ComposableMap,
   Geographies,
@@ -10,17 +9,16 @@ import {
   Graticule,
   ZoomableGroup,
 } from "react-simple-maps";
-import { Slider } from "../ui/slider";
 import { Toggle } from "../ui/toggle";
-import { Italic, ZoomInIcon } from "lucide-react";
-import { iso3_to_iso2 } from "@/lib/country_convert";
+import { ZoomInIcon } from "lucide-react";
+import { ISO3, iso3_to_iso2 } from "@/lib/country_convert";
 
 const geoUrl = "/features.json";
 const countryCodesUrl = "/country_codes.json";
 
-const colorScale = scaleLinear<string>()
-  .domain([0.29, 0.68])
-  .range(["#ffedea", "#ff5233"]);
+// const colorScale = scaleLinear<string>()
+//   .domain([0.29, 0.68])
+//   .range(["#ffedea", "#ff5233"]);
 
 const MapChart = ({
   selectedIso3: selectedCountry,
@@ -28,9 +26,9 @@ const MapChart = ({
   selectedIso3_2: selectedCountry2,
   setSelectedIso3_2: setSelectedCountry2,
 }: {
-  selectedIso3: string;
+  selectedIso3: ISO3 | undefined;
   setSelectedIso3: Function;
-  selectedIso3_2: string;
+  selectedIso3_2: ISO3 | undefined;
   setSelectedIso3_2: Function;
 }) => {
   const [autoZoom, setAutoZoom] = useState(false);
@@ -53,7 +51,7 @@ const MapChart = ({
     });
   }, []);
 
-  const handleCountryClick = (geo: GeoGeometryObjects) => {
+  const handleCountryClick = (geo: any) => {
     // console.log(geo);
     if (geo.id == selectedCountry) {
       setSelectedCountry(selectedCountry2);
@@ -71,7 +69,7 @@ const MapChart = ({
     }
   };
 
-  const handleFilter = (filter: SVGElement) => {
+  const handleFilter = (filter: any) => {
     return filter.type !== "dblclick";
   };
 
@@ -152,7 +150,7 @@ const MapChart = ({
                   } else {
                     fill = "#d0d0d0";
                   }
-                  const d = data.find((s) => s.ISO3 === geo.id);
+                  // const d = data.find((s) => s.ISO3 === geo.id);
                   // console.log(geo);
                   return (
                     <Geography

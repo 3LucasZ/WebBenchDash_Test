@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Skeleton } from "../ui/skeleton";
+
 import {
   Table,
   TableBody,
@@ -22,6 +22,7 @@ import {
   label_display,
   sourcesCited,
   unit_convert,
+  WebFeature,
 } from "../widget/data";
 
 export function DataCompare({
@@ -39,8 +40,7 @@ export function DataCompare({
   country_2_df: Record<string, number>;
   features: string[];
 }) {
-  const loading = country_1_df == null || country_2_df == null;
-  const featuresFull = getKeysByPrefix(country_1_df, features);
+  const featuresFull = getKeysByPrefix(country_1_df, features) as WebFeature[];
 
   return (
     <Card className="max-w-full  overflow-x-auto">

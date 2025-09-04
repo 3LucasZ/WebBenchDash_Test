@@ -1,4 +1,4 @@
-import { iso2_to_iso3 } from "@/lib/country_convert";
+import { ISO2, iso2_to_iso3, ISO3 } from "@/lib/country_convert";
 import { useCsvData } from "../context/CSVContext";
 import { DataCompare } from "../macro/data-compare";
 import { DataCountry } from "../macro/data-country";
@@ -12,8 +12,8 @@ export default function Widget({
   feature,
   selectedFeature,
 }: {
-  selectedIso3_1: string | null;
-  selectedIso3_2: string | null;
+  selectedIso3_1: ISO3 | undefined;
+  selectedIso3_2: ISO3 | undefined;
   selectedSubset: string;
   feature: string;
   selectedFeature: string;
@@ -29,7 +29,8 @@ export default function Widget({
     (row) => row.gov == (selectedSubset == "gov" ? "1" : "0")
   );
   const data1_t =
-    data_t.find((row) => iso2_to_iso3(row.cc) == selectedIso3_1) || data_t[0];
+    data_t.find((row) => iso2_to_iso3(row.cc as ISO2) == selectedIso3_1) ||
+    data_t[0];
   const data1 = cvtRecord(data1_t);
 
   if (!selectedIso3_2) {
@@ -44,7 +45,8 @@ export default function Widget({
     );
   }
   const data2_t =
-    data_t.find((row) => iso2_to_iso3(row.cc) == selectedIso3_2) || data_t[0];
+    data_t.find((row) => iso2_to_iso3(row.cc as ISO2) == selectedIso3_2) ||
+    data_t[0];
   const data2 = cvtRecord(data2_t);
 
   return (
