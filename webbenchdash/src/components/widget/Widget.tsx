@@ -28,9 +28,8 @@ export default function Widget({
   const data_t = data.filter(
     (row) => row.gov == (selectedSubset == "gov" ? "1" : "0")
   );
-  const data1_t = data_t.filter(
-    (row) => iso2_to_iso3(row.cc) == selectedIso3_1
-  )[0];
+  const data1_t =
+    data_t.find((row) => iso2_to_iso3(row.cc) == selectedIso3_1) || data_t[0];
   const data1 = cvtRecord(data1_t);
 
   if (!selectedIso3_2) {
@@ -44,9 +43,8 @@ export default function Widget({
       />
     );
   }
-  const data2_t = data_t.filter(
-    (row) => iso2_to_iso3(row.cc) == selectedIso3_2
-  )[0];
+  const data2_t =
+    data_t.find((row) => iso2_to_iso3(row.cc) == selectedIso3_2) || data_t[0];
   const data2 = cvtRecord(data2_t);
 
   return (
