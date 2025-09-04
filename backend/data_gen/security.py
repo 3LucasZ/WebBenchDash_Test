@@ -1,15 +1,23 @@
 from playwright.sync_api import sync_playwright
 
 from backend.data_gen.utils import wrap_domain
+from backend.utils.config import FAKE_USER_AGENT, OXYLABS_PASSWORD, OXYLABS_USERNAME
+from backend.utils.utils import get_proxy
+# https://developers.oxylabs.io/proxies/residential-proxies/location-settings/select-country
 
 
-def get_data(url, verbose=False):
-    fake_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+def get_data(cc, url, verbose=False):
     try:
         with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=True)
+            proxy = {
+                "server": get_proxy(cc),
+                "username": OXYLABS_USERNAME,
+                "password": OXYLABS_PASSWORD
+            }
+            print(proxy)
+            browser = playwright.chromium.launch(headless=True, proxy=proxy)
             context = browser.new_context(
-                user_agent=fake_user_agent,
+                user_agent=FAKE_USER_AGENT,
                 viewport={'width': 1920, 'height': 1080},
                 ignore_https_errors=True)
             page = context.new_page()
@@ -64,5 +72,5 @@ def get_data(url, verbose=False):
 
 
 if __name__ == "__main__":
-    data = get_data("https://google.com")
+    data = get_data("us", "https://www.reddit.com/")
     print(data)

@@ -57,3 +57,4 @@ SELECT distinct country_code, origin, experimental.popularity.rank
 #### Misc
 
 - Anycast prefixes: https://github.com/bgptools/anycast-prefixes/blob/master/anycatch-v4-prefixes.txt
+- Oxylabs proxy table: https://developers.oxylabs.io/proxies/residential-proxies/location-settings/select-country

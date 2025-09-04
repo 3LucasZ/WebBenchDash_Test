@@ -27,8 +27,7 @@ for filename in os.listdir(os.path.join(EXTERNAL_DIR, "Government_Resources")):
 NUM_SITES = 20
 
 load_dotenv()
-OXYLABS_SERVER = "http://pr.oxylabs.io:7777"
-OXYLABS_USERNAME = "webdash"
+OXYLABS_USERNAME = "webdash_B0HiL"
 OXYLABS_PASSWORD = os.getenv("OXYLABS_PASSWORD")
 FAKE_USER_AGENT = fake_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 # print("Configuration:")

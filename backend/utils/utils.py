@@ -2,6 +2,7 @@ import json
 import os
 from urllib.parse import urlparse
 
+import pandas as pd
 import requests
 import tldextract
 
@@ -83,3 +84,16 @@ def get_blocklist():
     except requests.exceptions.RequestException as e:
         print(f"Error fetching a blocklist: {e}")
         return []
+
+
+def get_proxy(iso2: str) -> str:
+    proxy_file = os.path.join(
+        EXTERNAL_DIR, "random-proxy-entry-points-oxylabs-residential.csv")
+    df = pd.read_csv(proxy_file)
+    matches = df[df['Entry Point:port'].str.startswith(iso2)]
+    match = matches.iloc[0]
+    return "http://"+match['Entry Point:port']
+
+
+if __name__ == "__main__":
+    print(get_proxy("au"))
