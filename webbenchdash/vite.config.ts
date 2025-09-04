@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/webbenchdash_test",
+  base: "/WebBenchDash_Test",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
