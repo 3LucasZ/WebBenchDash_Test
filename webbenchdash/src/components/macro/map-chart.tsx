@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { csv } from "d3-fetch";
-import { geoCentroid, type DSVRowArray } from "d3";
+// import { csv } from "d3-fetch";
+import { geoCentroid } from "d3";
 import {
   ComposableMap,
   Geographies,
@@ -12,9 +12,10 @@ import {
 import { Toggle } from "../ui/toggle";
 import { ZoomInIcon } from "lucide-react";
 import { ISO3, iso3_to_iso2 } from "@/lib/country_convert";
+import { basePath } from "@/lib/utils";
 
-const geoUrl = "/features.json";
-const countryCodesUrl = "/country_codes.json";
+const geoUrl = `${basePath}/features.json`;
+const countryCodesUrl = `${basePath}/country_codes.json`;
 
 // const colorScale = scaleLinear<string>()
 //   .domain([0.29, 0.68])
@@ -33,7 +34,7 @@ const MapChart = ({
 }) => {
   const [autoZoom, setAutoZoom] = useState(false);
   const [countriesInScope, setCountriesInScope] = useState<string[]>([]);
-  const [data, setData] = useState<DSVRowArray<string> | null>(null);
+  // const [data, setData] = useState<DSVRowArray<string> | null>(null);
   const [camera, setCamera] = useState<{
     center: [number, number];
     zoom: number;
@@ -45,10 +46,6 @@ const MapChart = ({
       .then((data) => {
         setCountriesInScope(data);
       });
-
-    csv(`/vulnerability.csv`).then((data) => {
-      setData(data);
-    });
   }, []);
 
   const handleCountryClick = (geo: any) => {
@@ -112,7 +109,7 @@ const MapChart = ({
           />
           <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
 
-          {data && data.length > 0 && (
+          {
             <Geographies geography={geoUrl}>
               {({ geographies }) => {
                 const reorderedGeographies = [...geographies];
@@ -188,7 +185,7 @@ const MapChart = ({
                 });
               }}
             </Geographies>
-          )}
+          }
         </ZoomableGroup>
       </ComposableMap>
     </div>

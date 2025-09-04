@@ -11,10 +11,11 @@ node_modules
 .DS_Store
 
 # Datasets
-*.csv
-*.xlsx
+backend/**/*.csv
+backend/**/*.xlsx
 Government_Resources
 blocklist.json
 
 # Builds
 dist/
+webbenchdash/public/vulnerability.csv

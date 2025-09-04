@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+export const basePath = "/WebBenchDash_Test";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

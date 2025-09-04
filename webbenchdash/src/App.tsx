@@ -8,7 +8,9 @@ import { ModeToggle } from "./components/mode-toggle";
 import Widget from "./components/widget/Widget";
 import { CsvDataProvider } from "./components/context/CSVContext";
 import { ISO3 } from "./lib/country_convert";
+import { basePath } from "./lib/utils";
 
+const csvPath = `${basePath}/dataset.csv`;
 function App() {
   const [selectedIso3_1, setSelectedIso3_1] = useState<ISO3>();
   const [selectedIso3_2, setSelectedIso3_2] = useState<ISO3>();
@@ -17,7 +19,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <CsvDataProvider fileUrl={"/dataset.csv"}>
+      <CsvDataProvider fileUrl={csvPath}>
         <div className="flex flex-col h-screen min-h-screen w-screen min-w-screen overflow-y-hidden">
           <p className="text-center text-4xl font-medium py-4">
             WebBench Dashboard
