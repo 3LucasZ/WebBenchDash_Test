@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+import random
 from urllib.parse import urlparse
 import pandas as pd
 from backend.utils.config import COUNTRY_CODES, COUNTRY_CODES_REAL, DATA_DIR, EXTERNAL_DIR, NUM_SITES, NUM_SITES_REAL
@@ -24,7 +25,7 @@ def get_gov_sites(target_cc, num_sites):
     if (num_sites > len(gov_sites)):
         return gov_sites
     else:
-        return gov_sites[:num_sites]
+        return random.sample(gov_sites, num_sites)
 
 
 def get_top_sites(target_cc, num_sites):
@@ -34,7 +35,7 @@ def get_top_sites(target_cc, num_sites):
     inFile = os.path.join(EXTERNAL_DIR, 'crux_top_sites.csv')
     df = pd.read_csv(inFile)
     df = df[df["country_code"] == target_cc.lower()]
-    top_sites = set(df["origin"].to_list())
+    top_sites = set(df["origin"].str.lower().to_list())
     # Filter
     top_sites = [site for site in top_sites if is_webpage(
         site) and not is_blocklisted(site)]
@@ -42,7 +43,7 @@ def get_top_sites(target_cc, num_sites):
     if (num_sites > len(top_sites)):
         return top_sites
     else:
-        return top_sites[:num_sites]
+        return random.sample(top_sites, num_sites)
 
 
 def clear_sites(csv_path):
