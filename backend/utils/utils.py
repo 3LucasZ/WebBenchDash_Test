@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import pandas as pd
 import requests
 import tldextract
+import validators
 
 from backend.external.bad_words import BAD_WORDS
 from backend.utils.config import DATA_DIR, EXTERNAL_DIR
@@ -12,8 +13,12 @@ from backend.utils.config import DATA_DIR, EXTERNAL_DIR
 
 def is_webpage(uri: str) -> bool:
     """
-    Determines if a URI is likely a webpage by checking its file extension against a blacklist.
+    Determines if a URI is likely a webpage by:
+    - checking its file extension against a blacklist.
+    - checking if its malformed via validator
     """
+    if not validators.url(uri):
+        return False
     # Common file extensions for assets, documents, and other non-HTML resources.
     BLACKLISTED_EXTENSIONS = {
         # Images
