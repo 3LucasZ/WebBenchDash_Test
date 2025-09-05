@@ -3,7 +3,7 @@ import json
 import os
 from urllib.parse import urlparse
 import pandas as pd
-from backend.utils.config import COUNTRY_CODES, DATA_DIR, EXTERNAL_DIR, NUM_SITES
+from backend.utils.config import COUNTRY_CODES, COUNTRY_CODES_REAL, DATA_DIR, EXTERNAL_DIR, NUM_SITES, NUM_SITES_REAL
 from backend.utils.utils import is_blocklisted, is_webpage
 
 
@@ -16,7 +16,7 @@ def get_gov_sites(target_cc, num_sites):
     with open(gov_path, 'r') as file:
         gov_sites = json.load(file)
     gov_sites = set([urlparse(uri).scheme+"://" +
-                    urlparse(uri).netloc for uri in gov_sites])
+                    urlparse(uri).netloc.lower() for uri in gov_sites])
     # Filter
     gov_sites = [site for site in gov_sites if is_webpage(
         site) and not is_blocklisted(site)]
@@ -62,10 +62,10 @@ def put_sites(country_code, is_gov, sites, csv_path):
 
 if __name__ == "__main__":
     clear_sites(os.path.join(DATA_DIR, "sites.csv"))
-    for country_code in COUNTRY_CODES:
-        country_gov_sites = get_gov_sites(country_code, NUM_SITES)
+    for country_code in COUNTRY_CODES_REAL:
+        country_gov_sites = get_gov_sites(country_code, NUM_SITES_REAL)
         put_sites(country_code, True, country_gov_sites,
                   os.path.join(DATA_DIR, "sites.csv"))
-        country_top_sites = get_top_sites(country_code, NUM_SITES)
+        country_top_sites = get_top_sites(country_code, NUM_SITES_REAL)
         put_sites(country_code, False, country_top_sites,
                   os.path.join(DATA_DIR, "sites.csv"))

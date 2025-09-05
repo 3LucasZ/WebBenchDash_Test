@@ -25,6 +25,7 @@ for filename in os.listdir(os.path.join(EXTERNAL_DIR, "Government_Resources")):
     cc = filename.split("_")[1].split(".")[0]
     COUNTRY_CODES_REAL.append(cc)
 NUM_SITES = 20
+NUM_SITES_REAL = 50
 
 load_dotenv()
 OXYLABS_USERNAME = "webdash_B0HiL"
