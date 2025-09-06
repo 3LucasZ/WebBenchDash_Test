@@ -2,8 +2,8 @@ export const widgetData: Record<string, WidgetMeta> = {
   reliability: {
     title: "DNS Resilience",
     path: "resilience-dns",
-    regFeatures: ["AS spread", "ipv4s", "ipv6s"],
-    proportionFeatures: ["ipv4 anycast", "ipv6 anycast"],
+    regFeatures: ["AS spread", "IPv4s", "IPv6s"],
+    proportionFeatures: ["IPv4 anycast", "IPv6 anycast"],
     categoricalPrefixes: [],
   },
   performance: {
@@ -25,7 +25,7 @@ export const widgetData: Record<string, WidgetMeta> = {
     title: "Security",
     path: "security",
     regFeatures: ["3rd_cookies", "3rd_cookie_domains"],
-    proportionFeatures: ["is_https", "is_v6"],
+    proportionFeatures: ["is_https", "is_IPv6"],
     categoricalPrefixes: ["security_protocol_", "http_protocol_"],
   },
 };
@@ -46,23 +46,23 @@ export const featureData = {
     direction: 1,
     convert: ["u", "u"],
   },
-  "ipv4 anycast": {
-    info: "Whether at least one of the name servers relies on BGP ipv4 anycast. (1)",
+  "IPv4 anycast": {
+    info: "Whether at least one of the name servers relies on BGP IPv4 anycast. (1)",
     direction: 1,
     convert: ["u", "u"],
   },
-  "ipv6 anycast": {
-    info: "Whether at least one of the name servers relies on BGP ipv6 anycast. (1)",
+  "IPv6 anycast": {
+    info: "Whether at least one of the name servers relies on BGP IPv6 anycast. (1)",
     direction: 1,
     convert: ["u", "u"],
   },
-  ipv4s: {
-    info: "Number of ipv4s the domain name servers are on.",
+  IPv4s: {
+    info: "Number of IPv4s the domain name servers are on.",
     direction: 1,
     convert: ["u", "u"],
   },
-  ipv6s: {
-    info: "Number of ipv6s the domain name servers are on.",
+  IPv6s: {
+    info: "Number of IPv6s the domain name servers are on.",
     direction: 1,
     convert: ["u", "u"],
   },
@@ -137,7 +137,7 @@ export const featureData = {
     direction: 1,
     convert: [".", "%"],
   },
-  is_v6: {
+  is_IPv6: {
     info: "Whether the website is accessible over IPv6, the most recent version of the Internet Protocol.",
     direction: 1,
     convert: [".", "%"],

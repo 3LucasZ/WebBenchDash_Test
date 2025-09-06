@@ -5,7 +5,7 @@ import pandas as pd
 from backend.utils.config import COUNTRY_CODES_REAL, DATA_DIR, OUT_DIR
 
 
-def summarize(csv_filenames: list[str], verbose=False) -> pd.DataFrame:
+def summarize(csv_filenames, verbose=False) -> pd.DataFrame:
     # combine all the csv files into one big csv
     merged_df = None
     for csv_filename in csv_filenames:

@@ -118,10 +118,10 @@ def get_data(url, verbose=False):
     ret = {
         "bad": False,
         "AS spread": len(asns),
-        "ipv4 anycast": ipv4_anycast,
-        "ipv6 anycast": ipv6_anycast,
-        "ipv4s": len(ipv4s),
-        "ipv6s": len(ipv6s)}
+        "IPv4 anycast": ipv4_anycast,
+        "IPv6 anycast": ipv6_anycast,
+        "IPv4s": len(ipv4s),
+        "IPv6s": len(ipv6s)}
     if verbose:
         print(ret)
     return ret
