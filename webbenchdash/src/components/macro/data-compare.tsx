@@ -98,6 +98,10 @@ export function DataCompare({
           </TableBody>
         </Table>
       </CardContent>
+      <CardFooter className="text-xs">
+        This data is averaged across ~50 randomly sampled websites from each
+        country's government and most popular websites.
+      </CardFooter>
       <CardFooter className="text-xs">{sourcesCited.join(", ")}</CardFooter>
     </Card>
   );
