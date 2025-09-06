@@ -100,7 +100,7 @@ export function DataCompare({
       </CardContent>
       <CardFooter className="text-xs">
         This data is averaged across ~50 randomly sampled websites from each
-        country's government and most popular websites.
+        country's government (3) and most popular websites (4).
       </CardFooter>
       <CardFooter className="text-xs">{sourcesCited.join(", ")}</CardFooter>
     </Card>

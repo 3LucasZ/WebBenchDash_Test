@@ -164,6 +164,8 @@ export const featureSet = Object.keys(featureData);
 export const sourcesCited = [
   "(1) https://github.com/SIDN/domainrd",
   "(2) https://web.eecs.umich.edu/~harshavm/papers/imc11.pdf",
+  "(3) https://dl.acm.org/doi/10.1145/3646547.3688447",
+  "(4) https://developer.chrome.com/docs/crux/bigquery ",
 ];
 export function label_display(featureName: WebFeature) {
   const myFeatureData = featureData[featureName];
